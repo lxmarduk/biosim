@@ -8,10 +8,14 @@ class QCell : public QObject
     Q_OBJECT
 
 private:
+    int cellID;
 
 
 public:
-    explicit QCell(QObject *parent = 0);
+    explicit QCell(int id);
+
+    int getCellID() const;
+    void setCellID(int value);
 
 signals:
 

@@ -14,10 +14,14 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    qcell.cpp
+    qcell.cpp \
+    rule.cpp \
+    condition.cpp
 
 HEADERS  += mainwindow.h \
-    qcell.h
+    qcell.h \
+    rule.h \
+    condition.h
 
 FORMS    += mainwindow.ui
 

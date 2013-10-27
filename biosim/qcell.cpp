@@ -1,6 +1,17 @@
 #include "qcell.h"
 
-QCell::QCell(QObject *parent) :
-    QObject(parent)
+
+int QCell::getCellID() const
 {
+    return cellID;
+}
+
+void QCell::setCellID(int value)
+{
+    cellID = value;
+}
+QCell::QCell(int id) :
+    QObject(NULL)
+{
+    this->cellID = id;
 }
