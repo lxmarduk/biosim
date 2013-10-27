@@ -23,7 +23,8 @@ HEADERS  += mainwindow.h \
     qcell.h \
     rule.h \
     condition.h \
-    aboutdialog.h
+    aboutdialog.h \
+    utils.h
 
 FORMS    += mainwindow.ui \
     aboutdialog.ui
