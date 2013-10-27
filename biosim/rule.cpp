@@ -1,16 +1,19 @@
 #include "rule.h"
 
-Rule::Rule() :
-    QObject(NULL)
+Rule::Rule()
 {
     conditions = QList<Condition>();
+}
+
+Rule::~Rule()
+{
+    conditions.clear();
 }
 
 bool Rule::apply() {
     return true;
 }
 
-Condition Rule::addCondition(const Condition &condition) {
+void Rule::addCondition(const Condition &condition) {
     conditions.append(condition);
 }
-

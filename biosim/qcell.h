@@ -13,6 +13,7 @@ private:
 
 public:
     explicit QCell(int id);
+    virtual ~QCell();
 
     int getCellID() const;
     void setCellID(int value);

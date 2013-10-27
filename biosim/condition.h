@@ -1,24 +1,19 @@
 #ifndef CONDITION_H
 #define CONDITION_H
 
-#include <QObject>
+#include <QString>
 
-class Condition : public QObject
+class Condition
 {
-    Q_OBJECT
 
 private:
     QString conditionName;
 
 public:
     explicit Condition(const QString &name);
+    virtual ~Condition();
 
-    virtual bool check() = NULL;
-
-signals:
-
-public slots:
-
+    virtual bool check();
 };
 
 #endif // CONDITION_H

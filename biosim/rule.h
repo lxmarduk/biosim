@@ -1,28 +1,21 @@
 #ifndef RULE_H
 #define RULE_H
 
-#include <QObject>
 #include <QList>
 #include "condition.h"
 
-class Rule : public QObject
+class Rule
 {
-    Q_OBJECT
-
 private:
     QList<Condition> conditions;
 
 public:
     explicit Rule();
+    virtual ~Rule();
 
-    bool apply();
+    virtual bool apply();
 
-    Condition addCondition(const Condition &condition);
-
-signals:
-
-public slots:
-
+    void addCondition(const Condition &condition);
 };
 
 #endif // RULE_H

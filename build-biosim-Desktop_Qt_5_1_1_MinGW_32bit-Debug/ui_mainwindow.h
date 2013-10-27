@@ -39,6 +39,9 @@ public:
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
         MainWindow->resize(502, 350);
+        QIcon icon;
+        icon.addFile(QStringLiteral(":/icons/biology_icon32"), QSize(), QIcon::Normal, QIcon::Off);
+        MainWindow->setWindowIcon(icon);
         actionAbout_Biosim = new QAction(MainWindow);
         actionAbout_Biosim->setObjectName(QStringLiteral("actionAbout_Biosim"));
         actionExit = new QAction(MainWindow);
@@ -54,7 +57,7 @@ public:
         MainWindow->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
-        mainToolBar->setMinimumSize(QSize(0, 32));
+        mainToolBar->setMinimumSize(QSize(0, 0));
         mainToolBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
         MainWindow->addToolBar(Qt::TopToolBarArea, mainToolBar);
         statusBar = new QStatusBar(MainWindow);

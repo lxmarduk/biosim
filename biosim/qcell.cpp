@@ -15,3 +15,8 @@ QCell::QCell(int id) :
 {
     this->cellID = id;
 }
+
+QCell::~QCell()
+{
+
+}
