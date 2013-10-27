@@ -10,7 +10,8 @@ Rule::~Rule()
     conditions.clear();
 }
 
-bool Rule::apply() {
+bool Rule::apply(QCell &cell) {
+    cell;
     return true;
 }
 

@@ -4,9 +4,9 @@ INPUT(
 ./debug\qcell.o
 ./debug\rule.o
 ./debug\condition.o
+./debug\aboutdialog.o
 ./debug\qrc_Resources.o
 ./debug\moc_mainwindow.o
 ./debug\moc_qcell.o
-./debug\moc_rule.o
-./debug\moc_condition.o
+./debug\moc_aboutdialog.o
 );

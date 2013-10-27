@@ -4,9 +4,9 @@ INPUT(
 ./release\qcell.o
 ./release\rule.o
 ./release\condition.o
+./release\aboutdialog.o
 ./release\qrc_Resources.o
 ./release\moc_mainwindow.o
 ./release\moc_qcell.o
-./release\moc_rule.o
-./release\moc_condition.o
+./release\moc_aboutdialog.o
 );

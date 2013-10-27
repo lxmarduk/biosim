@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <QMessageBox>
+#include "aboutdialog.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -21,10 +21,14 @@ void MainWindow::on_actionExit_triggered()
 
 void MainWindow::on_actionAbout_Biosim_triggered()
 {
+    /*
     QMessageBox about;
 
     about.setText("Biosim v1.0");
     about.setInformativeText("(c) 2013\nAlex Chaban (lxmarduk)");
     about.setStandardButtons(QMessageBox::Ok);
-    about.exec();
+    about.exec();//*/
+    AboutDialog* about = new AboutDialog(this);
+    about->setModal(true);
+    about->show();
 }

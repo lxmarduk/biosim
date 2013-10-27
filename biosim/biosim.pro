@@ -16,14 +16,17 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     qcell.cpp \
     rule.cpp \
-    condition.cpp
+    condition.cpp \
+    aboutdialog.cpp
 
 HEADERS  += mainwindow.h \
     qcell.h \
     rule.h \
-    condition.h
+    condition.h \
+    aboutdialog.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    aboutdialog.ui
 
 RESOURCES += \
     Resources.qrc

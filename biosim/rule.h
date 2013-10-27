@@ -4,6 +4,9 @@
 #include <QList>
 #include "condition.h"
 
+
+class QCell;
+
 class Rule
 {
 private:
@@ -13,7 +16,7 @@ public:
     explicit Rule();
     virtual ~Rule();
 
-    virtual bool apply();
+    virtual bool apply(QCell &cell);
 
     void addCondition(const Condition &condition);
 };
