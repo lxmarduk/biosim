@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using biosim.Implementation;
+using Biosim.Implementation;
 
-namespace biosim.Abstraction {
+namespace Biosim.Abstraction {
 
     [Serializable]
     public abstract class AbstractCell {
@@ -14,14 +14,20 @@ namespace biosim.Abstraction {
             get {
                 return props;
             }
-            set {
-                props = value;
-            }
         }
 
-        public AbstractCell(String name) {
-            Properties = new PropertyCollection();
-            Properties.Add(new StringProperty("Name", name));
+        protected AbstractCell(String name) {
+            props = new PropertyCollection();
+            props.Add(new StringProperty("Name", name));
+        }
+
+        public bool HasProperty(string name) {
+            foreach (AbstractProperty p in props) {
+                if (p.Name.Equals(name)) {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

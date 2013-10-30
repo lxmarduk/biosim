@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-using biosim.Implementation;
+using Biosim.Implementation;
 
-namespace biosim {
+namespace Biosim {
     public partial class Form1 : Form {
         public Form1() {
             InitializeComponent();

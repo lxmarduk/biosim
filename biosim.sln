@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "biosim", "biosim\biosim.csproj", "{3DDE530D-B779-49F8-880E-18D5D46AE34A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Biosim", "biosim\Biosim.csproj", "{3DDE530D-B779-49F8-880E-18D5D46AE34A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

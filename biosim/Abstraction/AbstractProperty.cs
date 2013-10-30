@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace biosim.Abstraction {
+namespace Biosim.Abstraction {
     [Serializable]
     public abstract class AbstractProperty {
 
@@ -17,13 +17,13 @@ namespace biosim.Abstraction {
             }
         }
 
-        private object value;
+        private object objValue;
         public Object Value {
             get {
-                return value;
+                return objValue;
             }
             set {
-                this.value = value;
+                this.objValue = value;
             }
         }
 

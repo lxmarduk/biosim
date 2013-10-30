@@ -1,4 +1,4 @@
-﻿namespace biosim {
+﻿namespace Biosim {
     partial class Form1 {
         /// <summary>
         /// Требуется переменная конструктора.

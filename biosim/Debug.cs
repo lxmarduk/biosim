@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace biosim {
+namespace Biosim {
     public static class Debug {
         static Debug() {
         }

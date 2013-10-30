@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using biosim.Abstraction;
+using Biosim.Abstraction;
 
-namespace biosim.Implementation {
+namespace Biosim.Implementation {
     public sealed class IntProperty : AbstractProperty {
         public IntProperty(string name)
             : base(name) {
