@@ -7,7 +7,7 @@ using biosim.Abstraction;
 namespace biosim.Implementation {
 
     [Serializable]
-    public class PropertyCollection : ICollection<AbstractProperty> {
+    public sealed class PropertyCollection : ICollection<AbstractProperty> {
 
         List<AbstractProperty> items;
 
@@ -55,6 +55,22 @@ namespace biosim.Implementation {
             get {
                 return items[index];
             }
+        }
+
+        public AbstractProperty this[string key] {
+            get {
+                int len = items.Count;
+                for (int i = 0; i < len; ++i) {
+                    if (items[i].Name.Equals(key)) {
+                        return items[i];
+                    }
+                }
+                return null;
+            }
+        }
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
+            return new PropertyEnumerator(this);
         }
     }
 }

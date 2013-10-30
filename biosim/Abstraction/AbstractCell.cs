@@ -9,9 +9,14 @@ namespace biosim.Abstraction {
     [Serializable]
     public abstract class AbstractCell {
 
+        PropertyCollection props;
         public PropertyCollection Properties {
-            get;
-            set;
+            get {
+                return props;
+            }
+            set {
+                props = value;
+            }
         }
 
         public AbstractCell(String name) {

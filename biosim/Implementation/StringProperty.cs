@@ -5,7 +5,7 @@ using System.Text;
 using biosim.Abstraction;
 
 namespace biosim.Implementation {
-    public class StringProperty : AbstractProperty {
+    public sealed class StringProperty : AbstractProperty {
 
         public StringProperty(string name)
             : base(name) {
@@ -13,8 +13,12 @@ namespace biosim.Implementation {
 
         public StringProperty(string name, object value)
             : base(name, value) {
+            if (!Value.GetType().Equals(typeof(string))) {
+                Debug.PrintWarning("Value doesn't \"string\". Set to default.");
+                Value = String.Empty;
+            }
         }
-        
+
         public override void Increment() {
             // doesn't need for String;
             return;
@@ -44,9 +48,7 @@ namespace biosim.Implementation {
             if (value.GetType().Equals(typeof(String))) {
                 Value = value;
             } else {
-#if DEBUG
-                Console.WriteLine("WARNING: Try to set non-string value to String object.");
-#endif
+                Debug.PrintWarning("Try to set non-string value to string object.");
                 Value = value.ToString();
             }
         }

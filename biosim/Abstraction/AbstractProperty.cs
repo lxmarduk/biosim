@@ -7,23 +7,23 @@ namespace biosim.Abstraction {
     [Serializable]
     public abstract class AbstractProperty {
 
+        string name;
         public String Name {
-            get;
-            set;
+            get {
+                return name;
+            }
+            set {
+                name = value;
+            }
         }
 
         private object value;
         public Object Value {
-            get;
+            get {
+                return value;
+            }
             set {
                 this.value = value;
-            }
-        }
-
-        [NonSerialized]
-        public Type Type {
-            get {
-                return Value.GetType();
             }
         }
 

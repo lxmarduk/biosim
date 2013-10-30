@@ -48,12 +48,15 @@
   <ItemGroup>
     <Compile Include="Abstraction\AbstractCell.cs" />
     <Compile Include="Abstraction\AbstractProperty.cs" />
+    <Compile Include="Debug.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Implementation\BoolProperty.cs" />
+    <Compile Include="Implementation\FloatProperty.cs" />
     <Compile Include="Implementation\IntProperty.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

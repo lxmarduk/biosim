@@ -5,7 +5,7 @@ using System.Text;
 using biosim.Abstraction;
 
 namespace biosim.Implementation {
-    public class PropertyEnumerator : IEnumerator<AbstractProperty> {
+    public sealed class PropertyEnumerator : IEnumerator<AbstractProperty> {
 
         private int current;
         private PropertyCollection collection;
@@ -16,6 +16,12 @@ namespace biosim.Implementation {
         }
 
         public AbstractProperty Current {
+            get {
+                return collection[current];
+            }
+        }
+
+        object System.Collections.IEnumerator.Current {
             get {
                 return collection[current];
             }
