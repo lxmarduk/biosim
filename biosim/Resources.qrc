@@ -1,6 +1,0 @@
-<RCC>
-    <qresource prefix="/icons">
-        <file alias="biology_icon128">biology128.png</file>
-        <file alias="biology_icon32">biology32.png</file>
-    </qresource>
-</RCC>
