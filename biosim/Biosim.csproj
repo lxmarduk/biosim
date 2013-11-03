@@ -72,6 +72,7 @@
     <Compile Include="Implementation\PropertyCollection.cs" />
     <Compile Include="Implementation\PropertyEnumerator.cs" />
     <Compile Include="Implementation\StringProperty.cs" />
+    <Compile Include="Debug.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

@@ -11,7 +11,7 @@ namespace Biosim.Implementation {
         private PropertyCollection collection;
 
         public PropertyEnumerator(PropertyCollection collection) {
-            current = 0;
+            current = -1;
             this.collection = collection;
         }
 
@@ -41,7 +41,7 @@ namespace Biosim.Implementation {
         }
 
         public void Reset() {
-            current = 0;
+            current = -1;
         }
     }
 }

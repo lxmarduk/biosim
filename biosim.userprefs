@@ -1,0 +1,15 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="biosim/test.cs">
+    <Files>
+      <File FileName="biosim/Main.cs" Line="15" Column="1" />
+      <File FileName="biosim/MainWindow.cs" Line="2" Column="11" />
+      <File FileName="biosim/test.cs" Line="1" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <AuthorInfo Name="lxmarduk" Email="lxmarduk@gmail.com" Copyright="lxmarduk" Company="" Trademark="" />
+</Properties>
