@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Biosim", "biosim\Biosim.csproj", "{B304AE31-D787-4025-9866-5B68B8C5D2B6}"
 EndProject
 Global
@@ -21,12 +21,10 @@ Global
 		$1.DirectoryNamespaceAssociation = None
 		$1.ResourceNamePolicy = FileFormatDefault
 		$0.TextStylePolicy = $2
-		$2.RemoveTrailingWhitespace = True
 		$2.inheritsSet = VisualStudio
 		$2.inheritsScope = text/plain
 		$2.scope = text/plain
 		$0.TextStylePolicy = $3
-		$3.RemoveTrailingWhitespace = True
 		$3.inheritsSet = VisualStudio
 		$3.inheritsScope = text/plain
 		$3.scope = text/x-csharp
@@ -44,5 +42,6 @@ Global
 		$7.MessageStyle = $8
 		$8.LineAlign = 0
 		$7.inheritsSet = Mono
+		version = 1.0
 	EndGlobalSection
 EndGlobal

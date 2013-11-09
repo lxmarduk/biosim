@@ -1,11 +1,18 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="biosim/test.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="biosim/Main.cs">
     <Files>
-      <File FileName="biosim/Main.cs" Line="15" Column="1" />
-      <File FileName="biosim/MainWindow.cs" Line="2" Column="11" />
-      <File FileName="biosim/test.cs" Line="1" Column="1" />
+      <File FileName="biosim/Main.cs" Line="10" Column="10" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State expanded="True">
+          <Node name="Biosim" expanded="True">
+            <Node name="References" expanded="True" />
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />

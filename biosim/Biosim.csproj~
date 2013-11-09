@@ -7,11 +7,9 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{B304AE31-D787-4025-9866-5B68B8C5D2B6}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Biosim</RootNamespace>
+    <RootNamespace>biosim</RootNamespace>
     <AssemblyName>biosim</AssemblyName>
     <StartupObject>Biosim.MainClass</StartupObject>
-    <newfilesearch>OnLoadAutoInsert</newfilesearch>
-    <ReleaseVersion>1.0</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,6 +19,7 @@
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x64</PlatformTarget>
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
@@ -35,12 +34,20 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="Mono.Posix" />
+    <Reference Include="gtk-sharp, Version=3.0.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="pango-sharp, Version=3.0.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="WindowsBase" />
-    <Reference Include="System.Drawing" />
+    <Reference Include="gdk-sharp, Version=3.0.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="gtk-gui\gui.stetic">
+      <LogicalName>gui.stetic</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="gtk-gui\generated.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Abstraction\AbstractCell.cs" />
@@ -52,44 +59,10 @@
     <Compile Include="Implementation\PropertyEnumerator.cs" />
     <Compile Include="Implementation\StringProperty.cs" />
     <Compile Include="Debug.cs" />
-    <Compile Include="UI\MainWindow.cs" />
-    <Compile Include="Utils.cs" />
-    <Compile Include="UI\MainToolbar.cs" />
-    <Compile Include="UI\MapVizualizer.cs" />
-    <Compile Include="UI\ToolbarToggleButton.cs" />
-    <Compile Include="Implementation\Map.cs" />
-    <Compile Include="Abstraction\AbstractMapSelector.cs" />
-    <Compile Include="Implementation\BoxSelector.cs" />
-    <Compile Include="Implementation\ContinuousSelector.cs" />
-    <Compile Include="Implementation\Cell.cs" />
-    <Compile Include="Abstraction\AbstractRule.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Abstraction\" />
     <Folder Include="Implementation\" />
-    <Folder Include="UI\" />
-    <Folder Include="Resources\" />
-  </ItemGroup>
-  <ProjectExtensions>
-    <MonoDevelop>
-      <Properties>
-        <Policies>
-          <TextStylePolicy FileWidth="120" TabsToSpaces="False" EolMarker="Unix" inheritsSet="VisualStudio" inheritsScope="text/plain" scope="text/x-csharp" />
-          <CSharpFormattingPolicy IndentSwitchBody="True" BeforeMethodDeclarationParentheses="False" BeforeMethodCallParentheses="False" BeforeConstructorDeclarationParentheses="False" BeforeDelegateDeclarationParentheses="False" NewParentheses="False" inheritsSet="Mono" inheritsScope="text/x-csharp" scope="text/x-csharp" />
-        </Policies>
-      </Properties>
-    </MonoDevelop>
-  </ProjectExtensions>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\play.png">
-      <LogicalName>play</LogicalName>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\pause.png">
-      <LogicalName>pause</LogicalName>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\next_step.png">
-      <LogicalName>next_step</LogicalName>
-    </EmbeddedResource>
   </ItemGroup>
 </Project>
