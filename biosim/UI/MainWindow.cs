@@ -1,12 +1,14 @@
 using System;
 using System.Windows.Forms;
 using System.Reflection;
+using Biosim.Implementation;
 
 namespace Biosim.UI
 {
 	public class MainWindow : Form
 	{
 		MainToolbar toolbar;
+		MapVizualizer mapVis;
 
 		public MainWindow() : base()
 		{
@@ -17,9 +19,26 @@ namespace Biosim.UI
 		private void initializeUI()
 		{
 			Text = Assembly.GetExecutingAssembly().GetName().Name.ToString() + " v" + Assembly.GetExecutingAssembly().GetName().Version.ToString();
+			DoubleBuffered = true;
 			toolbar = new MainToolbar(this);
 			toolbar.Visible = true;
 			toolbar.ButtonClick += toolbarButtonClick;
+
+			Map map = new Map(64, 64);
+			map.InitializeCells(new Cell("Test"));
+			mapVis = new MapVizualizer(this, map);
+
+			Resize += HandleResize;
+
+			OnResize(null);
+		}
+
+		void HandleResize(object sender, EventArgs e)
+		{
+			mapVis.Left = 0;
+			mapVis.Top = toolbar.Height + 7;
+			mapVis.Width = ClientSize.Width;
+			mapVis.Height = ClientSize.Height - toolbar.Height - 7;
 		}
         
 		private void toolbarButtonClick(object sender, ToolBarButtonClickEventArgs e)

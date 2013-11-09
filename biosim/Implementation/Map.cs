@@ -67,6 +67,11 @@ namespace Biosim.Implementation
 				Cells [i] = cell.Clone();
 			}
 		}
+
+		public void SetCell(AbstractCell cell, int x, int y)
+		{
+			
+		}
 	}
 }
 

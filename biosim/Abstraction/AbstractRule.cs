@@ -5,7 +5,7 @@ namespace Biosim.Abstraction
 {
 	public abstract class AbstractRule
 	{
-		Map map;
+		protected Map map;
 
 		public AbstractRule(Map map)
 		{

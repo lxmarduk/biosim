@@ -1,21 +1,24 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="biosim/UI/MainWindow.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="biosim/UI/MapVizualizer.cs">
     <Files>
       <File FileName="biosim/Main.cs" Line="13" Column="4" />
-      <File FileName="biosim/Implementation/Cell.cs" Line="17" Column="41" />
-      <File FileName="biosim/Implementation/Map.cs" Line="51" Column="30" />
-      <File FileName="biosim/Abstraction/AbstractRule.cs" Line="12" Column="19" />
-      <File FileName="biosim/UI/MainWindow.cs" Line="19" Column="139" />
+      <File FileName="biosim/UI/MapVizualizer.cs" Line="51" Column="54" />
+      <File FileName="biosim/UI/MainWindow.cs" Line="22" Column="26" />
+      <File FileName="biosim/Implementation/BoolProperty.cs" Line="73" Column="1" />
+      <File FileName="biosim/Implementation/Map.cs" Line="73" Column="4" />
+      <File FileName="biosim/Implementation/PropertyCollection.cs" Line="27" Column="13" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="Biosim" expanded="True" selected="True">
+          <Node name="Biosim" expanded="True">
             <Node name="Abstraction" expanded="True" />
             <Node name="Implementation" expanded="True" />
             <Node name="Resources" expanded="True" />
-            <Node name="UI" expanded="True" />
+            <Node name="UI" expanded="True">
+              <Node name="MapVizualizer.cs" selected="True" />
+            </Node>
           </Node>
         </State>
       </Pad>

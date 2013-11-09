@@ -7,6 +7,7 @@ namespace Biosim.Implementation
 	{
 		public Cell(string name) : base(name)
 		{
+			Properties.Add(new BoolProperty("Alive", true));
 		}
 
 		#region implemented abstract members of Biosim.Abstraction.AbstractCell

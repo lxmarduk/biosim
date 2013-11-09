@@ -13,15 +13,21 @@ namespace Biosim.Implementation
 		#region implemented abstract members of Biosim.Abstraction.AbstractMapSelector
 		public override AbstractCell Select(int x, int y)
 		{
-			if (x < 0 || x >= map.Width) {
+			try {
+				AbstractCell cell = map.Cells [GetIndex(x, y)];
+				return cell;
+			} catch (IndexOutOfRangeException e) {
+				Debug.PrintError(e.Message);
 				return null;
 			}
-			if (y < 0 || y >= map.Height) {
-				return null;
-			}
-			return map.Cells [x + y * map.Width];
+		}
+
+		public override int GetIndex(int x, int y)
+		{
+			return x + y * map.Width;
 		}
 		#endregion
+
 
 	}
 }

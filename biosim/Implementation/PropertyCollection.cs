@@ -20,7 +20,16 @@ namespace Biosim.Implementation
 
 		public void Add(AbstractProperty item)
 		{
-			items.Add(item);
+			if (HasProperty(item.Name)) {
+				for (int i = 0; i < items.Count; ++i) {
+					if (items [i].Name.Equals(item.Name)) {
+						items [i].Value = item.Value;
+						break;
+					}
+				}
+			} else {
+				items.Add(item);
+			}
 		}
 
 		public void Clear()
