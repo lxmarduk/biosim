@@ -34,7 +34,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="Mono.Posix" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="WindowsBase" />
@@ -43,8 +42,6 @@
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="Abstraction\AbstractCell.cs" />
-    <Compile Include="Abstraction\AbstractProperty.cs" />
     <Compile Include="Implementation\BoolProperty.cs" />
     <Compile Include="Implementation\FloatProperty.cs" />
     <Compile Include="Implementation\IntProperty.cs" />
@@ -58,18 +55,31 @@
     <Compile Include="UI\MapVizualizer.cs" />
     <Compile Include="UI\ToolbarToggleButton.cs" />
     <Compile Include="Implementation\Map.cs" />
-    <Compile Include="Abstraction\AbstractMapSelector.cs" />
     <Compile Include="Implementation\BoxSelector.cs" />
     <Compile Include="Implementation\ContinuousSelector.cs" />
     <Compile Include="Implementation\Cell.cs" />
+    <Compile Include="UI\SideBar.cs" />
+    <Compile Include="Abstraction\AbstractCell.cs" />
+    <Compile Include="Abstraction\AbstractProperty.cs" />
+    <Compile Include="Abstraction\AbstractMapSelector.cs" />
     <Compile Include="Abstraction\AbstractRule.cs" />
+    <Compile Include="Implementation\RuleEquals.cs" />
+    <Compile Include="Implementation\RuleLess.cs" />
+    <Compile Include="Implementation\RuleGreater.cs" />
+    <Compile Include="Implementation\RuleLessEquals.cs" />
+    <Compile Include="Implementation\RuleGreaterEquals.cs" />
+    <Compile Include="Abstraction\AbstractRuleAction.cs" />
+    <Compile Include="UI\NewRuleWidget.cs" />
+    <Compile Include="Implementation\RuleAction.cs" />
+    <Compile Include="Implementation\RuleAnd.cs" />
+    <Compile Include="Implementation\RuleOr.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <Folder Include="Abstraction\" />
     <Folder Include="Implementation\" />
     <Folder Include="UI\" />
     <Folder Include="Resources\" />
+    <Folder Include="Abstraction\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
@@ -91,5 +101,8 @@
     <EmbeddedResource Include="Resources\next_step.png">
       <LogicalName>next_step</LogicalName>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="gtk-gui\gui.stetic" />
   </ItemGroup>
 </Project>

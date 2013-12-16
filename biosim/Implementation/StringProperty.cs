@@ -8,7 +8,6 @@ namespace Biosim.Implementation
 {
 	public sealed class StringProperty : AbstractProperty
 	{
-
 		public StringProperty(string name)
             : this(name, null)
 		{
@@ -72,6 +71,14 @@ namespace Biosim.Implementation
 		public override AbstractProperty Clone()
 		{
 			return new StringProperty(this.Name, (string)this.Value);
+		}
+
+		public override bool Equ(object obj)
+		{
+			if (!obj.GetType().Equals(typeof(String))) {
+				return false;
+			}
+			return ((string)obj).Equals((string)Value);
 		}
 	}
 }

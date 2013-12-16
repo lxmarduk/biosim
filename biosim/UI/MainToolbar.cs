@@ -1,43 +1,47 @@
-using System;
 using System.Drawing;
-using System.IO;
 using System.Windows.Forms;
 
 namespace Biosim.UI
 {
 	public class MainToolbar : ToolBar
 	{
-		public const int PLAY_BUTTON = 0;
-		public const int PAUSE_BUTTON = 1;
-		public const int NEXT_STEP_BUTTON = 2;
+		public const int PlayButton = 0;
+		public const int PauseButton = 1;
+		public const int NextStepButton = 2;
         
 		ImageList imageList;
         
-		public MainToolbar(Form form) : base()
+		public MainToolbar(Control control) : base()
 		{
 			imageList = new ImageList();
 			buildImages();
-			this.ImageList = imageList;
+			ImageList = imageList;
             
-			this.Parent = form;
-			this.Dock = DockStyle.Top;
-			this.Height = 52;
+			Parent = control;
+			Dock = DockStyle.Top;
+			Height = 52;
             
 			//this.Appearance = ToolBarAppearance.Flat;
-			this.ButtonSize = new System.Drawing.Size(52, 52);
+			ButtonSize = new System.Drawing.Size(52, 52);
             
 			ToolbarToggleButton play = new ToolbarToggleButton("Play");
 			play.ImageKey = "play";
-			play.Tag = PLAY_BUTTON;
-			this.Buttons.Add(play);
+			play.ToolTipText = "Play/pause simulation";
+			play.Tag = PlayButton;
+			Buttons.Add(play);
             
 			ToolBarButton next = new ToolBarButton("Next step");
 			next.ImageKey = "next_step";
-			next.Tag = NEXT_STEP_BUTTON;
-			this.Buttons.Add(next);
+			next.ToolTipText = "Simulate one step";
+			next.Tag = NextStepButton;
+			Buttons.Add(next);
+
+			ToolBarButton sep = new ToolBarButton();
+			sep.Style = ToolBarButtonStyle.Separator;
+			Buttons.Add(sep);
 		}
         
-		private void buildImages()
+		void buildImages()
 		{
 			imageList.ColorDepth = ColorDepth.Depth32Bit;
 			imageList.ImageSize = new Size(24, 24);

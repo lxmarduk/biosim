@@ -1,7 +1,4 @@
-using System;
 using System.Windows.Forms;
-using System.Drawing;
-using System.IO;
 
 namespace Biosim.UI
 {
@@ -13,7 +10,7 @@ namespace Biosim.UI
 
 		public ToolbarToggleButton(string text) : base (text)
 		{
-			this.Style = ToolBarButtonStyle.ToggleButton;
+			Style = ToolBarButtonStyle.ToggleButton;
 		}
 
 	}

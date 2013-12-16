@@ -1,19 +1,28 @@
 using System;
-using Biosim.Implementation;
 
 namespace Biosim.Abstraction
 {
+	[Serializable]
 	public abstract class AbstractRule
 	{
-		protected Map map;
+		protected readonly String property;
+		protected readonly object equalityValue;
 
-		public AbstractRule(Map map)
-		{
-			this.map = map;
+		public String Property {
+			get {
+				return property;
+			}
 		}
 
-		public virtual void Apply(int x, int y)
+		protected AbstractRule(String property, object expr)
 		{
+			this.property = property;
+			equalityValue = expr;
+		}
+
+		public virtual bool Check(AbstractCell cell)
+		{
+			return false;
 		}
 	}
 }

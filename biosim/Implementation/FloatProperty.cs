@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
 using Biosim.Abstraction;
 
 namespace Biosim.Implementation
@@ -30,7 +29,6 @@ namespace Biosim.Implementation
 			}
 			return false;
 		}
-
 
 		public override void Increment()
 		{
@@ -98,6 +96,14 @@ namespace Biosim.Implementation
 		public override AbstractProperty Clone()
 		{
 			return new FloatProperty(this.Name, (float)this.Value);
+		}
+
+		public override bool Equ(object obj)
+		{
+			if (!checkValue(obj)) {
+				return false;
+			}
+			return Math.Abs((float)Value - (float)obj) <= 0.0000001f;
 		}
 	}
 }

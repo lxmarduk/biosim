@@ -14,7 +14,7 @@ namespace Biosim.Implementation
 		public override AbstractCell Select(int x, int y)
 		{
 			try {
-				AbstractCell cell = map.Cells [GetIndex(x, y)];
+				AbstractCell cell = Map.Cells [GetIndex(x, y)];
 				return cell;
 			} catch (IndexOutOfRangeException e) {
 				Debug.PrintError(e.Message);
@@ -24,7 +24,7 @@ namespace Biosim.Implementation
 
 		public override int GetIndex(int x, int y)
 		{
-			return x + y * map.Width;
+			return x + y * Map.Width;
 		}
 		#endregion
 

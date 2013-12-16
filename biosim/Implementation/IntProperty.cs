@@ -11,6 +11,7 @@ namespace Biosim.Implementation
             : this(name, null)
 		{
 		}
+
 		public IntProperty(string name, object value)
             : base(name, value)
 		{
@@ -96,6 +97,14 @@ namespace Biosim.Implementation
 		public override AbstractProperty Clone()
 		{
 			return new IntProperty(this.Name, (int)this.Value);
+		}
+
+		public override bool Equ(object obj)
+		{
+			if (!checkValue(obj)) {
+				return false;
+			}
+			return (int)Value == (int)obj;
 		}
 	}
 }

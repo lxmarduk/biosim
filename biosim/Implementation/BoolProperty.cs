@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Biosim.Abstraction;
+﻿using Biosim.Abstraction;
 
 namespace Biosim.Implementation
 {
@@ -21,7 +18,7 @@ namespace Biosim.Implementation
 			}
 		}
 
-		private bool checkValue(object value)
+		bool checkValue(object value)
 		{
 			if (value != null) {
 				return value.GetType().Equals(typeof(bool));
@@ -76,6 +73,14 @@ namespace Biosim.Implementation
 		public override AbstractProperty Clone()
 		{
 			return new BoolProperty(this.Name, (bool)this.Value);
+		}
+
+		public override bool Equ(object obj)
+		{
+			if (!checkValue(obj)) {
+				return false;
+			}
+			return (bool)obj == (bool)Value;
 		}
 	}
 }

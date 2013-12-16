@@ -1,8 +1,5 @@
-using System;
 using System.Windows.Forms;
 using Biosim.UI;
-using Biosim.Abstraction;
-using Biosim.Implementation;
 
 namespace Biosim
 {
