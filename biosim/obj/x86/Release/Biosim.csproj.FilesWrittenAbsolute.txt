@@ -1,0 +1,6 @@
+/home/lxmarduk/Projects/biosim/biosim/obj/x86/Release/.NETFramework,Version=v4.0.AssemblyAttribute.cs
+/home/lxmarduk/Projects/biosim/biosim/obj/x86/Release/Biosim.Resources.play.png
+/home/lxmarduk/Projects/biosim/biosim/obj/x86/Release/Biosim.Resources.pause.png
+/home/lxmarduk/Projects/biosim/biosim/obj/x86/Release/Biosim.Resources.next_step.png
+/home/lxmarduk/Projects/biosim/biosim/bin/Release/biosim.exe
+/home/lxmarduk/Projects/biosim/biosim/obj/x86/Release/biosim.exe
