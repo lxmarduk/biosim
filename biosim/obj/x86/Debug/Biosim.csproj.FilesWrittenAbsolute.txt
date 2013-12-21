@@ -6,3 +6,10 @@
 /home/lxmarduk/Projects/biosim/biosim/bin/Debug/biosim.exe
 /home/lxmarduk/Projects/biosim/biosim/obj/x86/Debug/biosim.exe
 /home/lxmarduk/Projects/biosim/biosim/obj/x86/Debug/biosim.exe.mdb
+/home/lxmarduk/Projects/biosim/biosim/obj/x86/Debug/.NETFramework,Version=v4.0,Profile=Client.AssemblyAttribute.cs
+/home/lxmarduk/Projects/biosim/biosim/obj/x86/Debug/Biosim.Resources.document-new.png
+/home/lxmarduk/Projects/biosim/biosim/obj/x86/Debug/Biosim.Resources.document-open.png
+/home/lxmarduk/Projects/biosim/biosim/obj/x86/Debug/Biosim.Resources.document-properties.png
+/home/lxmarduk/Projects/biosim/biosim/obj/x86/Debug/Biosim.Resources.document-save.png
+/home/lxmarduk/Projects/biosim/biosim/obj/x86/Debug/Biosim.Resources.list-add.png
+/home/lxmarduk/Projects/biosim/biosim/obj/x86/Debug/Biosim.Resources.list-remove.png

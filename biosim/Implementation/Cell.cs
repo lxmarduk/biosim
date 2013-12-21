@@ -7,6 +7,7 @@ namespace Biosim.Implementation
 	[Serializable]
 	public class Cell : AbstractCell
 	{
+		[Serializable]
 		public enum CellShape
 		{
 			Square,
@@ -17,79 +18,70 @@ namespace Biosim.Implementation
 
 		CellShape shape;
 
+		public Color Color {
+			get {
+				return drawer.FillColor;
+			}
+			set {
+				drawer.FillColor = value;
+			}
+		}
+
 		public CellShape Shape {
 			get {
 				return shape;
 			}
 			set {
 				shape = value;
+				switch (shape) {
+					case CellShape.Square:
+						drawer = new CellDrawerSquare();
+						break;
+					case CellShape.Circle:
+						drawer = new CellDrawerCircle();
+						break;
+					case CellShape.Triangle:
+						drawer = new CellDrawerTriangle();
+						break;
+					case CellShape.Diamond:
+						drawer = new CellDrawerDiamond();
+						break;
+				}
 			}
 		}
 
-		Color color;
-
-		public Color Color {
-			get {
-				return color;
-			}
-			set {
-				color = value;
-			}
-		}
+		ShapeDrawer drawer;
 
 		public Cell(string name) : base(name)
 		{
-			shape = CellShape.Square;
-			color = Color.Lime;
+			Shape = CellShape.Square;
 		}
 
 		#region implemented abstract members of Biosim.Abstraction.AbstractCell
 
 		public override AbstractCell Clone()
 		{
-			Cell result = new Cell(this.Properties ["Name"].Value.ToString());
+			Cell result = new Cell(Properties ["Name"].Value.ToString());
 			foreach (AbstractProperty prop in Properties) {
 				result.Properties.Add(prop.Clone());
 			}
+			result.Shape = shape;
+			result.Color = Color;
 			return result;
 		}
 
-		public override void Draw(System.Drawing.Graphics g, System.Drawing.Rectangle bounds)
+		public override void Draw(Graphics g, Rectangle bounds)
 		{
+			g.DrawRectangle(Pens.Blue, bounds);
 			g.FillRectangle(Brushes.DimGray, bounds);
-			Pen outline = new Pen(Brushes.Black);
-			outline.Width = 2;
 			if ((bool)Properties ["Alive"].Value) {
-				Brush colorBrush = new SolidBrush(Color);
-				switch (Shape) {
-					case CellShape.Square:
-						g.FillRectangle(colorBrush, new Rectangle(bounds.Left + 1, bounds.Top + 1, bounds.Width - 1, bounds.Height - 1));
-						g.DrawRectangle(outline, new Rectangle(bounds.Left + 1, bounds.Top + 1, bounds.Width - 1, bounds.Height - 1));
-						break;
-					case CellShape.Circle:
-						g.FillEllipse(colorBrush, new Rectangle(bounds.Left, bounds.Top, bounds.Width - 2, bounds.Height - 2));
-						g.DrawEllipse(outline, new Rectangle(bounds.Left, bounds.Top, bounds.Width - 2, bounds.Height - 2));
-						break;
-					case CellShape.Triangle:
-						Point[] triangle = new Point[] { new Point(bounds.Left + bounds.Width / 2, bounds.Top + 1),
-							new Point(bounds.Left, bounds.Bottom - 1), new Point(bounds.Right, bounds.Bottom - 1)
-						};
-						g.FillPolygon(colorBrush, triangle);
-						g.DrawPolygon(outline, triangle);
-						break;
-					case CellShape.Diamond:
-						Point[] diamond = new Point[] { new Point(bounds.Left + bounds.Width / 2, bounds.Top),
-							new Point(bounds.Left, bounds.Top + bounds.Height / 2), 
-							new Point(bounds.Left + bounds.Width / 2, bounds.Bottom), 
-							new Point(bounds.Right, bounds.Top + bounds.Width / 2)
-						};
-						g.FillPolygon(colorBrush, diamond);
-						g.DrawPolygon(outline, diamond);
-						break;
-					default:
-						throw new System.ArgumentOutOfRangeException();
-				}
+				drawer.Draw(g, bounds);
 			}
+		}
+
+		public void DrawIcon(Graphics g, Rectangle bounds)
+		{
+			drawer.Draw(g, bounds);
 		}
 
 		#endregion

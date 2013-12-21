@@ -4,15 +4,20 @@ using Biosim.Abstraction;
 namespace Biosim.Implementation
 {
 	[Serializable]
-	public class RuleEquals : AbstractRule
+	public class RuleEquals : RuleEvaluation
 	{
 		public RuleEquals(String prop, object value) : base(prop, value)
 		{
 		}
 
-		public override bool Check(AbstractCell cell)
+		protected override bool Compare(AbstractCell cell)
 		{
-			return cell.Properties [property].Equ(equalityValue);
+			return cell.Properties [Property].Equ(EqualityValue);
+		}
+
+		public override string ToString()
+		{
+			return string.Format("{0} = {1}", Property, EqualityValue);
 		}
 	}
 }

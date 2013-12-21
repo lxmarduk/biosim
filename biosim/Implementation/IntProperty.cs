@@ -5,6 +5,7 @@ using Biosim.Abstraction;
 
 namespace Biosim.Implementation
 {
+	[Serializable]
 	public sealed class IntProperty : AbstractProperty
 	{
 		public IntProperty(string name)
@@ -31,11 +32,7 @@ namespace Biosim.Implementation
 
 		public override void Increment()
 		{
-			if (checkValue(Value)) {
-				Value = (int)Value + 1;
-			} else {
-				Debug.PrintWarning("Value type of property doesn't \"int\". Not incremented.");
-			}
+			Increment(1);
 		}
 
 		public override void Increment(object amount)
@@ -82,7 +79,7 @@ namespace Biosim.Implementation
 		public override void Set(object value)
 		{
 			if (checkValue(value)) {
-				Value = (int)value;
+				Value = value;
 			} else {
 				Debug.PrintWarning("Value to set doesn't \"int\". Not setted.");
 			}

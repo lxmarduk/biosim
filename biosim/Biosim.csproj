@@ -51,7 +51,6 @@
     <Compile Include="Debug.cs" />
     <Compile Include="UI\MainWindow.cs" />
     <Compile Include="Utils.cs" />
-    <Compile Include="UI\MainToolbar.cs" />
     <Compile Include="UI\MapVizualizer.cs" />
     <Compile Include="UI\ToolbarToggleButton.cs" />
     <Compile Include="Implementation\Map.cs" />
@@ -62,17 +61,28 @@
     <Compile Include="Abstraction\AbstractCell.cs" />
     <Compile Include="Abstraction\AbstractProperty.cs" />
     <Compile Include="Abstraction\AbstractMapSelector.cs" />
-    <Compile Include="Abstraction\AbstractRule.cs" />
     <Compile Include="Implementation\RuleEquals.cs" />
     <Compile Include="Implementation\RuleLess.cs" />
     <Compile Include="Implementation\RuleGreater.cs" />
     <Compile Include="Implementation\RuleLessEquals.cs" />
     <Compile Include="Implementation\RuleGreaterEquals.cs" />
     <Compile Include="Abstraction\AbstractRuleAction.cs" />
-    <Compile Include="UI\NewRuleWidget.cs" />
     <Compile Include="Implementation\RuleAction.cs" />
     <Compile Include="Implementation\RuleAnd.cs" />
     <Compile Include="Implementation\RuleOr.cs" />
+    <Compile Include="Implementation\RuleEvaluation.cs" />
+    <Compile Include="Implementation\RuleLogical.cs" />
+    <Compile Include="UI\Chart.cs" />
+    <Compile Include="UI\NewMapDialog.cs" />
+    <Compile Include="Abstraction\IRule.cs" />
+    <Compile Include="Abstraction\AbstractCellDrawer.cs" />
+    <Compile Include="Implementation\CellDrawerSquare.cs" />
+    <Compile Include="Implementation\CellDrawerCircle.cs" />
+    <Compile Include="Implementation\ShapeDrawer.cs" />
+    <Compile Include="Implementation\CellDrawerTriangle.cs" />
+    <Compile Include="Implementation\CellDrawerDiamond.cs" />
+    <Compile Include="UI\MainToolbar.cs" />
+    <Compile Include="UI\CellView.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -100,6 +110,24 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\next_step.png">
       <LogicalName>next_step</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\document-new.png">
+      <LogicalName>document-new</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\document-open.png">
+      <LogicalName>document-open</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\document-properties.png">
+      <LogicalName>document-properties</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\document-save.png">
+      <LogicalName>document-save</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\list-add.png">
+      <LogicalName>list-add</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\list-remove.png">
+      <LogicalName>list-remove</LogicalName>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -3,22 +3,23 @@ using Biosim.Abstraction;
 
 namespace Biosim.Implementation
 {
-	public class RuleAnd : AbstractRule
+	[Serializable]
+	public class RuleAnd : RuleLogical
 	{
-		readonly AbstractRule r1;
-		readonly AbstractRule r2;
-
-		public RuleAnd(AbstractRule r1, AbstractRule r2) : base(String.Empty, null)
+		public RuleAnd(IRule r1, IRule r2) : base(r1, r2)
 		{
-			this.r1 = r1;
-			this.r2 = r2;
 		}
 
-		public override bool Check(AbstractCell cell)
+		protected override bool Evaluate(AbstractCell cell)
 		{
-			bool r1res = r1.Check(cell);
-			bool r2res = r2.Check(cell);
+			bool r1res = RuleOne.Check(cell);
+			bool r2res = RuleTwo.Check(cell);
 			return r1res && r2res;
+		}
+
+		public override string ToString()
+		{
+			return string.Format("({0} і {1})", RuleOne, RuleTwo);
 		}
 	}
 }

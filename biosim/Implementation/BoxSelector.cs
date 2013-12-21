@@ -1,7 +1,6 @@
 using System;
 using Biosim.Abstraction;
 
-
 namespace Biosim.Implementation
 {
 	public class BoxSelector : AbstractMapSelector
@@ -11,9 +10,18 @@ namespace Biosim.Implementation
 		}
 
 		#region implemented abstract members of Biosim.Abstraction.AbstractMapSelector
+
 		public override AbstractCell Select(int x, int y)
 		{
 			try {
+				if (x < 0)
+					return null;
+				if (x >= Map.Width)
+					return null;
+				if (y < 0)
+					return null;
+				if (y >= Map.Height)
+					return null;
 				AbstractCell cell = Map.Cells [GetIndex(x, y)];
 				return cell;
 			} catch (IndexOutOfRangeException e) {
@@ -26,8 +34,8 @@ namespace Biosim.Implementation
 		{
 			return x + y * Map.Width;
 		}
-		#endregion
 
+		#endregion
 
 	}
 }

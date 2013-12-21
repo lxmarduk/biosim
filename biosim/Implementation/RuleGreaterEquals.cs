@@ -4,21 +4,26 @@ using Biosim.Abstraction;
 namespace Biosim.Implementation
 {
 	[Serializable]
-	public class RuleGreaterEquals : AbstractRule
+	public class RuleGreaterEquals : RuleEvaluation
 	{
 		public RuleGreaterEquals(String p, object value) : base(p, value)
 		{
 		}
 
-		public override bool Check(AbstractCell cell)
+		protected override bool Compare(AbstractCell cell)
 		{
-			if (cell.Properties [property].GetType().Equals(typeof(IntProperty))) {
-				return (int)cell.Properties [property].Value >= (int)equalityValue;
-			} else if (cell.Properties [property].GetType().Equals(typeof(FloatProperty))) {
-				return (float)cell.Properties [property].Value >= (float)equalityValue;
-			} else {
-				return false;
+			if (cell.Properties [Property].GetType().Equals(typeof(IntProperty))) {
+				return (int)cell.Properties [Property].Value >= (int)EqualityValue;
+			} 
+			if (cell.Properties [Property].GetType().Equals(typeof(FloatProperty))) {
+				return (float)cell.Properties [Property].Value >= (float)EqualityValue;
 			}
+			return false;
+		}
+
+		public override string ToString()
+		{
+			return string.Format("{0} >= {1}", Property, EqualityValue);
 		}
 	}
 }

@@ -15,6 +15,9 @@ namespace Biosim
 			get {
 				return map;
 			}
+			set {
+				map = value;
+			}
 		}
 
 		public MapVizualizer(Control control, Map map) : base()
@@ -32,47 +35,6 @@ namespace Biosim
 
 			panel.Location = new Point(0, 0);
 			panel.Size = new Size(CellSize * map.Width, CellSize * map.Height);
-			panel.MouseClick += HandleMouseClick;
-		}
-
-		void HandleMouseClick(object sender, MouseEventArgs e)
-		{
-			int x = e.X / CellSize;
-			int y = e.Y / CellSize;
-			Graphics g = panel.CreateGraphics();
-			if (map.Selector.Select(x, y).Properties.HasProperty("Alive") && map.Selector.Select(x, y).Properties ["Alive"].Equ((bool)true)) {
-				map.Selector.Select(x, y).Properties ["Alive"].Unset();
-			} else {
-				map.Selector.Select(x, y).Properties ["Alive"].Set();
-			}
-			/*
-			cell = map.Selector.Select(x, y) as Cell;
-			if (cell == null) {
-				return;
-			}
-			switch (cell.Shape) {
-				case Cell.CellShape.Square:
-					cell.Shape = Cell.CellShape.Circle;
-					break;
-				case Cell.CellShape.Circle:
-					cell.Shape = Cell.CellShape.Triangle;
-					break;
-				case Cell.CellShape.Triangle:
-					cell.Shape = Cell.CellShape.Diamond;
-					break;
-				case Cell.CellShape.Diamond:
-					cell.Shape = Cell.CellShape.Square;
-					break;
-				default:
-					throw new ArgumentOutOfRangeException();
-			}
-			Random rnd = new Random();
-			Color c = Color.FromArgb(rnd.Next(0, 255),
-				          rnd.Next(0, 255),
-				          rnd.Next(0, 255));
-			cell.Color = c;//*/
-			g.Dispose();
-			panel.Refresh();
 		}
 
 		void HandlePaint(object sender, PaintEventArgs e)

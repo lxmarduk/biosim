@@ -1,7 +1,9 @@
 ﻿using Biosim.Abstraction;
+using System;
 
 namespace Biosim.Implementation
 {
+	[Serializable]
 	public sealed class BoolProperty : AbstractProperty
 	{
 		public BoolProperty(string name)

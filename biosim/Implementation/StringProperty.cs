@@ -6,6 +6,7 @@ using Biosim.Abstraction;
 
 namespace Biosim.Implementation
 {
+	[Serializable]
 	public sealed class StringProperty : AbstractProperty
 	{
 		public StringProperty(string name)

@@ -3,9 +3,10 @@ using Biosim.Abstraction;
 
 namespace Biosim.Implementation
 {
+	[Serializable]
 	public class RuleAction : AbstractRuleAction
 	{
-		public RuleAction(AbstractRule r, ActionType a, String t) : base(r, a, t)
+		public RuleAction(AbstractCell target, IRule r, ActionType a, String t) : base(target, r, a, t)
 		{
 		}
 	}

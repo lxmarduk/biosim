@@ -2,16 +2,28 @@ using System;
 using System.Collections.Generic;
 using Biosim.Abstraction;
 using System.Windows.Forms;
+using Biosim.UI;
 
 namespace Biosim.Implementation
 {
 	[Serializable]
 	public class Map
 	{
+		[NonSerialized]
 		AbstractMapSelector	selector;
 
 		public AbstractMapSelector Selector {
 			get {
+				if (selector == null) {
+					switch (mapType) {
+						case MapType.Box:
+							selector = new BoxSelector(this);
+							break;
+						case MapType.Continuous:
+							selector = new ContinuousSelector(this);
+							break;
+					}
+				}
 				return selector;
 			}
 		}
@@ -27,8 +39,9 @@ namespace Biosim.Implementation
 		}
 
 		public AbstractCell[] Cells;
-		public List<AbstractRuleAction> ruleActions;
+		public List<AbstractRuleAction> RuleActions;
 
+		[Serializable]
 		public enum MapType
 		{
 			Box,
@@ -59,20 +72,29 @@ namespace Biosim.Implementation
 		{
 			Width = width;
 			Height = height;
-			Type = MapType.Continuous;
+			Type = MapType.Box;
 			Cells = new AbstractCell[width * height];
-			ruleActions = new List<AbstractRuleAction>();
-			ruleActions.Add(new RuleAction(
-				new RuleAnd(new RuleEquals("Alive", true), new RuleOr(
-					new RuleGreater("Neighbours", 3),
-					new RuleLess("Neighbours", 2)
-				)),
-				ActionType.UnsetValue,
-				"Alive"));
-			ruleActions.Add(new RuleAction(
-				new RuleAnd(new RuleEquals("Alive", false), new RuleEquals("Neighbours", 3)),
-				ActionType.SetValue, 
-				"Alive"));
+			RuleActions = new List<AbstractRuleAction>();
+			RuleActions.Add(
+				new RuleAction(MainWindow.dummy, 
+					new RuleAnd(
+						new RuleEquals("Alive", false), 
+						new RuleEquals("Neighbours", 3)), 
+					ActionType.Born, ""));
+			RuleActions.Add(
+				new RuleAction(MainWindow.dummy, 
+					new RuleAnd(
+						new RuleEquals("Alive", true), 
+						new RuleOr(
+							new RuleGreater("Neighbours", 3), 
+							new RuleLess("Neighbours", 2)
+						)
+					), ActionType.Die, ""));
+
+
+			foreach (var r in RuleActions) {
+				Console.WriteLine(r);
+			}
 		}
 
 		public void InitializeCells(AbstractCell cell)
@@ -94,28 +116,55 @@ namespace Biosim.Implementation
 			for (int i = 0; i < Cells.Length; ++i) {
 				cellsCopy [i] = Cells [i].Clone();
 			}
-			for (int x = 0; x < Width; ++x) {
-				for (int y = 0; y < Height; ++y) {
-					selector.Select(x, y).Properties ["Neighbours"].Unset();
-					for (int i = -1; i <= 1; ++i) {
-						for (int j = -1; j <= 1; ++j) {
-							if (i == 0 && j == 0)
-								continue;
-							if (selector.Select(x + i, y + j) != null
-							    && selector.Select(x + i, y + j).Properties ["Alive"].Equ(true)) {
-								selector.Select(x, y).Properties ["Neighbours"].Increment();
-							}
-							Application.DoEvents();
-						}
-					}
+			for (int y = 0; y < Height; ++y) {
+				for (int x = 0; x < Width; ++x) {
+					AbstractCell c = selector.Select(x, y);
 				
-					foreach (AbstractRuleAction r in ruleActions) {
-						switch (r.Process(selector.Select(x, y))) {
+					foreach (AbstractRuleAction r in RuleActions) {
+						c.Properties ["Neighbours"].Unset();
+						for (int i = -1; i <= 1; ++i) {
+							for (int j = -1; j <= 1; ++j) {
+								if (i == 0 && j == 0)
+									continue;
+								try {
+									if (selector.Select(x + i, y + j) != null) {
+										if (selector.Select(x + i, y + j).Properties ["Name"].Equ(r.TargetCell.Properties ["Name"].Value)) {
+											if (selector.Select(x + i, y + j).Properties ["Alive"].Equ(true)) {
+												c.Properties ["Neighbours"].Increment();
+											}
+										}
+									} else {
+										continue;
+									}
+								} catch (NullReferenceException e) {
+									Console.WriteLine(e.Message);
+									Console.WriteLine(e.Source);
+									continue;
+								}
+								Application.DoEvents();
+							}
+						}
+
+						switch (r.Process(c)) {
+							case ActionType.Born:
+								cellsCopy [selector.GetIndex(x, y)] = r.TargetCell.Clone();
+								break;
+							case ActionType.Die:
+								if (c.Properties ["Name"].Equ(r.TargetCell.Properties ["Name"].Value)) {
+									cellsCopy [selector.GetIndex(x, y)].Properties ["Alive"].Unset();
+								}
+								break;
 							case ActionType.SetValue:
 								cellsCopy [selector.GetIndex(x, y)].Properties [r.TargetProperty].Set();
 								break;
 							case ActionType.UnsetValue:
 								cellsCopy [selector.GetIndex(x, y)].Properties [r.TargetProperty].Unset();
+								break;
+							case ActionType.IncValue:
+								cellsCopy [selector.GetIndex(x, y)].Properties [r.TargetProperty].Increment();
+								break;
+							case ActionType.DecValue:
+								cellsCopy [selector.GetIndex(x, y)].Properties [r.TargetProperty].Decrement();
 								break;
 							case ActionType.NoChange:
 								break;
@@ -124,10 +173,7 @@ namespace Biosim.Implementation
 					Application.DoEvents();
 				}
 			}
-			for (int i = 0; i < cellsCopy.Length; ++i) {
-				Cells [i] = cellsCopy [i].Clone();
-				Application.DoEvents();
-			}
+			Cells = cellsCopy;
 		}
 	}
 }

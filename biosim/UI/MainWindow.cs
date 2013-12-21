@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using System.Reflection;
 using Biosim.Implementation;
 using System.Drawing;
+using Biosim.Abstraction;
 
 namespace Biosim.UI
 {
@@ -12,56 +13,38 @@ namespace Biosim.UI
 		MapVizualizer mapVis;
 		SideBar sidebar;
 		Timer playTimer;
+		public static Cell dummy = new Cell("Dummy");
 
-		public MainWindow() : base()
+		public MainWindow()
 		{
-			InitializeUi();
-			IntProperty p = new IntProperty("Test", 10);
-			Utils.Serialize(p);
+			dummy = (Cell)Utils.DeserializeCell("cells/Dummy.bin");
+			try {
+				InitializeUi();
+			} catch (NullReferenceException) {
+				Application.Exit();
+			}
 		}
 
 		void InitializeUi()
 		{
 			SetClientSizeCore(800, 600);
-			Text = Assembly.GetExecutingAssembly().GetName().Name.ToString() + " v" + Assembly.GetExecutingAssembly().GetName().Version.ToString();
+			Text = Assembly.GetExecutingAssembly().GetName().Name + " v" + Assembly.GetExecutingAssembly().GetName().Version;
 			DoubleBuffered = true;
 			toolbar = new MainToolbar(this);
 			toolbar.Visible = true;
 			toolbar.ButtonClick += ToolbarButtonClick;
 
-			Map map = new Map(16, 16);
-			map.InitializeCells(new Cell("Test"));
+			NewMapDialog.Show();
+
+			Map map = NewMapDialog.Map;
+			if (map == null) {
+				throw new NullReferenceException();
+			}
+			map.InitializeCells(new Cell("Empty"));
 			mapVis = new MapVizualizer(this, map);
+			mapVis.Controls [0].MouseClick += HandleMouseClick;
 
 			sidebar = new SideBar(this);
-
-			NewRuleWidget w = new NewRuleWidget(map.Cells [0]);
-			w.Parent = sidebar;
-			w.Location = new Point(8, 200);
-
-			Label lbl_mapsize = new Label();
-			lbl_mapsize.Text = "Set map size:";
-			lbl_mapsize.Location = new Point(8, 8);
-			lbl_mapsize.Parent = sidebar;
-			TextBox txt_width = new TextBox();
-			txt_width.Text = "16";
-			txt_width.Location = new Point(8, lbl_mapsize.Bottom + 8);
-			txt_width.Parent = sidebar;
-			TextBox txt_height = new TextBox();
-			txt_height.Text = "16";
-			txt_height.Location = new Point(8, txt_width.Bottom + 8);
-			txt_height.Parent = sidebar;
-			Button btn_size = new Button();
-			btn_size.Text = "Set map size";
-			btn_size.AutoSize = true;
-			btn_size.Location = new Point(8, txt_height.Bottom + 8);
-			btn_size.Parent = sidebar;
-			btn_size.Click += (object sender, EventArgs e) => {
-				map = null;
-				map = new Map(Int32.Parse(txt_width.Text), Int32.Parse(txt_height.Text));
-				map.InitializeCells(new Cell("Test"));
-				mapVis.SetMap(map);
-			};
 
 			Resize += HandleResize;
 
@@ -70,6 +53,24 @@ namespace Biosim.UI
 			playTimer.Enabled = false;
 
 			OnResize(null);
+		}
+
+		void HandleMouseClick(object sender, MouseEventArgs e)
+		{
+			int x = e.X / MapVizualizer.CellSize;
+			int y = e.Y / MapVizualizer.CellSize;
+			Cell pickedCell; 
+			if (e.Button == MouseButtons.Left) {
+				if (sidebar.Cells.View.SelectedIndex != -1) {
+					pickedCell = (Cell)sidebar.Cells.SelectedCell;
+				} else {
+					return;
+				}
+				mapVis.Map.SetCell(pickedCell.Clone(), x, y);
+			} else {
+				mapVis.Map.Selector.Select(x, y).Properties ["Alive"].Unset();
+			}
+			mapVis.Refresh();
 		}
 
 		void HandleResize(object sender, EventArgs e)
@@ -96,18 +97,27 @@ namespace Biosim.UI
 					case MainToolbar.PlayButton:
 						e.Button.Tag = MainToolbar.PauseButton;
 						e.Button.ImageKey = "pause";
-						e.Button.Text = "Pause";
-						playTimer.Interval = 500;
+						e.Button.Text = "Пауза";
+						playTimer.Interval = 100;
 						playTimer.Enabled = true;
 						break;
 					case MainToolbar.PauseButton:
 						e.Button.Tag = MainToolbar.PlayButton;
 						e.Button.ImageKey = "play";
-						e.Button.Text = "Play";
+						e.Button.Text = "Старт";
 						playTimer.Enabled = false;
 						break;
 					case MainToolbar.NextStepButton:
 						HandleTick(null, null);
+						break;
+					case MainToolbar.NewDocumentButton:
+						if (MessageBox.Show("Ви впевнені, що хочете почати нову симуляцію?\nВсі не збережені зміни буде відкинуто.", "Нова симуляція", MessageBoxButtons.YesNo) == DialogResult.Yes) {
+							if (NewMapDialog.Show() == DialogResult.OK) {
+								mapVis.Map = NewMapDialog.Map;
+								mapVis.Map.InitializeCells(new Cell("Dummy"));
+								mapVis.Refresh();
+							}
+						}
 						break;
 				}
 			}
