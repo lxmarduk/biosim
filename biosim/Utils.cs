@@ -48,13 +48,25 @@ namespace Biosim
 			fstr.Dispose();
 		}
 
-		public static Map DeserializeMap(string fileName)
+		public static void SerializeMap(Map map, string fileName)
 		{
 			BinaryFormatter bin = new BinaryFormatter();
-			FileStream fstr = new FileStream(fileName, FileMode.Open);
-			Map result = (Map)bin.Deserialize(fstr);
+			FileStream fstr = new FileStream(fileName, FileMode.Create);
+			bin.Serialize(fstr, map);
 			fstr.Dispose();
-			return result;
+		}
+
+		public static Map DeserializeMap(string fileName)
+		{
+			try {
+				BinaryFormatter bin = new BinaryFormatter();
+				FileStream fstr = new FileStream(fileName, FileMode.Open);
+				Map result = (Map)bin.Deserialize(fstr);
+				fstr.Dispose();
+				return result;
+			} catch {
+				return null;
+			}
 		}
 
 		public static AbstractRuleAction DeserializeRuleAction(string fileName)
@@ -92,6 +104,16 @@ namespace Biosim
 					return "Народитися";
 				case ActionType.Die:
 					return "Померти";
+				case ActionType.StatsInc:
+					return "Збільшити статистичне значення";
+				case ActionType.StatsDec:
+					return "Зменшити статистичне значення";
+				case ActionType.IncBy:
+					return "Збільшити на";
+				case ActionType.DecBy:
+					return "Зменшити на";
+				case ActionType.SetValueTo:
+					return "Встановити значення в";
 			}
 			return "Unknown";
 		}
@@ -105,6 +127,21 @@ namespace Biosim
 					return "Відкриті межі";
 			}
 			return "Unknown";
+		}
+
+		public static String CellShapeToString(Cell.CellShape shape)
+		{
+			switch (shape) {
+				case Cell.CellShape.Square:
+					return "Квадрат";
+				case Cell.CellShape.Circle:
+					return "Круг";
+				case Cell.CellShape.Triangle:
+					return "Трикутник";
+				case Cell.CellShape.Diamond:				
+					return "Ромб";
+			}
+			return "WTF?";
 		}
 	}
 }

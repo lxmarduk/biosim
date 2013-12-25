@@ -1,3 +1,4 @@
+using System;
 using System.Windows.Forms;
 using Biosim.UI;
 using Biosim.Implementation;
@@ -9,19 +10,22 @@ namespace Biosim
 	{
 		public static void Main(string[] args)
 		{
-			Cell c = new Cell("Dummy");
-			c.Properties ["Alive"].Set();
-			c.Shape = Cell.CellShape.Circle;
-			Utils.Serialize(c, "Dummy");
-
-			Cell d = new Cell("Red mist");
-			d.Properties ["Alive"].Set();
-			d.Shape = Cell.CellShape.Diamond;
-			d.Color = Color.Red;
-			Utils.Serialize(d, "Red mist");
-
+			/*Form f = new Form();
+			f.FormBorderStyle = FormBorderStyle.FixedDialog;
+			f.AutoSize = true;
+			f.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+			f.Margin = new Padding(8);
+			f.StartPosition = FormStartPosition.CenterScreen;
+			Cell c = new Cell("Test cell");
+			RuleLogicalWidget r = new RuleLogicalWidget();
+			r.Parent = f;
+			r.EditableCell = (Cell)c.Clone();
+			Application.Run(f);
+			Console.WriteLine(r.Rule);
+			//*/
 			Application.EnableVisualStyles();
 			Application.Run(new MainWindow());
+			//*/
 		}
 	}
 }

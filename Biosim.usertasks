@@ -1,3 +1,4 @@
 <ListOfTask>
-  <Task file="" description="Add rules for neighbours (select neighbours from different sides). RuleNeighbour(direction, property, equality)." priority="High" />
+  <Task file="" description="Add rules for neighbours (select neighbours from different sides). RuleNeighbour(direction, property, equality)." priority="Low" />
+  <Task file="" description="Process EditableProperty changes in RuleLogicalWidget for all children widgets" priority="High" completed="True" />
 </ListOfTask>

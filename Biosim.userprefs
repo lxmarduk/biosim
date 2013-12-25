@@ -1,8 +1,15 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="biosim/UI/MainWindow.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="biosim/UI/NewPropertyDialog.cs">
     <Files>
-      <File FileName="biosim/UI/MainWindow.cs" Line="23" Column="5" />
+      <File FileName="biosim/UI/MainWindow.cs" Line="1" Column="1" />
+      <File FileName="biosim/Utils.cs" Line="1" Column="1" />
+      <File FileName="biosim/Main.cs" Line="11" Column="41" />
+      <File FileName="biosim/UI/NewRuleActionDialog.cs" Line="17" Column="4" />
+      <File FileName="biosim/Implementation/Map.cs" Line="82" Column="49" />
+      <File FileName="biosim/UI/MapVizualizer.cs" Line="10" Column="33" />
+      <File FileName="biosim/UI/EditCellDialog.cs" Line="184" Column="18" />
+      <File FileName="biosim/UI/NewPropertyDialog.cs" Line="131" Column="49" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

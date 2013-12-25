@@ -1,6 +1,7 @@
 using System;
 using System.Drawing;
 using Biosim.Abstraction;
+using System.Text;
 
 namespace Biosim.Implementation
 {
@@ -17,13 +18,17 @@ namespace Biosim.Implementation
 		}
 
 		CellShape shape;
+		Color color;
 
 		public Color Color {
 			get {
-				return drawer.FillColor;
+				return color;
 			}
 			set {
-				drawer.FillColor = value;
+				color = value;
+				if (drawer != null) {
+					drawer.FillColor = color;
+				}
 			}
 		}
 
@@ -47,6 +52,7 @@ namespace Biosim.Implementation
 						drawer = new CellDrawerDiamond();
 						break;
 				}
+				drawer.FillColor = color;
 			}
 		}
 
@@ -54,6 +60,7 @@ namespace Biosim.Implementation
 
 		public Cell(string name) : base(name)
 		{
+			Color = Color.Lime;
 			Shape = CellShape.Square;
 		}
 
@@ -61,7 +68,7 @@ namespace Biosim.Implementation
 
 		public override AbstractCell Clone()
 		{
-			Cell result = new Cell(Properties ["Name"].Value.ToString());
+			Cell result = new Cell(Properties ["Ім'я"].Value.ToString());
 			foreach (AbstractProperty prop in Properties) {
 				result.Properties.Add(prop.Clone());
 			}
@@ -74,7 +81,7 @@ namespace Biosim.Implementation
 		{
 			g.DrawRectangle(Pens.Blue, bounds);
 			g.FillRectangle(Brushes.DimGray, bounds);
-			if ((bool)Properties ["Alive"].Value) {
+			if ((bool)Properties ["Жива"].Value) {
 				drawer.Draw(g, bounds);
 			}
 		}
@@ -86,6 +93,25 @@ namespace Biosim.Implementation
 
 		#endregion
 
+		public override string ToString()
+		{
+			StringBuilder b = new StringBuilder();
+			b.Append(GetType().Name);
+			b.Append("\n");
+			foreach (AbstractProperty p in Properties) {
+				b.Append("\t");
+				b.Append(p.Name);
+				b.Append(": ");
+				b.Append(p.Value.ToString());
+				b.Append("\n");
+			}
+			b.Append("\tФорма: ");
+			b.Append(Utils.CellShapeToString(Shape));
+			b.Append("\n\tКолір: ");
+			b.AppendFormat("rgb({0}, {1}, {2})", color.R, color.G, color.B);
+			b.Append("\n");
+			return b.ToString();
+		}
 	}
 }
 

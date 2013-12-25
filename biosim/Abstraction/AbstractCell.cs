@@ -19,10 +19,9 @@ namespace Biosim.Abstraction
 		protected AbstractCell(String name)
 		{
 			props = new PropertyCollection();
-			props.Add(new StringProperty("Name", name));
-			props.Add(new BoolProperty("Alive", false));
-			props.Add(new IntProperty("Age", (int)0));
-			props.Add(new IntProperty("Neighbours", (int)0));
+			props.Add(new StringProperty("Ім'я", name));
+			props.Add(new BoolProperty("Жива", false));
+			props.Add(new IntProperty("Сусіди", (int)0));
 		}
 
 		public abstract AbstractCell Clone();

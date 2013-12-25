@@ -17,6 +17,7 @@ namespace Biosim
 			}
 			set {
 				map = value;
+				panel.Size = new Size(CellSize * map.Width, CellSize * map.Height);
 			}
 		}
 

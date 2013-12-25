@@ -4,3 +4,9 @@
 /home/lxmarduk/Projects/biosim/biosim/obj/x86/Release/Biosim.Resources.next_step.png
 /home/lxmarduk/Projects/biosim/biosim/bin/Release/biosim.exe
 /home/lxmarduk/Projects/biosim/biosim/obj/x86/Release/biosim.exe
+/home/lxmarduk/Projects/biosim/biosim/obj/x86/Release/Biosim.Resources.document-new.png
+/home/lxmarduk/Projects/biosim/biosim/obj/x86/Release/Biosim.Resources.document-open.png
+/home/lxmarduk/Projects/biosim/biosim/obj/x86/Release/Biosim.Resources.document-properties.png
+/home/lxmarduk/Projects/biosim/biosim/obj/x86/Release/Biosim.Resources.document-save.png
+/home/lxmarduk/Projects/biosim/biosim/obj/x86/Release/Biosim.Resources.list-add.png
+/home/lxmarduk/Projects/biosim/biosim/obj/x86/Release/Biosim.Resources.list-remove.png

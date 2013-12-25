@@ -9,6 +9,9 @@ namespace Biosim.UI
 		public const int PauseButton = 1;
 		public const int NextStepButton = 2;
 		public const int NewDocumentButton = 3;
+		public const int OpenDocumentButton = 4;
+		public const int SaveDocumentButton = 5;
+		public const int DocumentProperties = 6;
 		ImageList imageList;
 
 		public MainToolbar(Control control) : base()
@@ -45,6 +48,24 @@ namespace Biosim.UI
 			newDoc.ToolTipText = "Нова симуляція";
 			newDoc.Tag = NewDocumentButton;
 			Buttons.Add(newDoc);
+
+			ToolBarButton openDoc = new ToolBarButton("Відкрити");
+			openDoc.ImageKey = "document-open";
+			openDoc.ToolTipText = "Відкрити існуючу симуляцію";
+			openDoc.Tag = OpenDocumentButton;
+			Buttons.Add(openDoc);
+
+			ToolBarButton saveDoc = new ToolBarButton("Зберегти");
+			saveDoc.ImageKey = "document-save";
+			saveDoc.ToolTipText = "Зберегти симуляцію";
+			saveDoc.Tag = SaveDocumentButton;
+			Buttons.Add(saveDoc);
+
+			ToolBarButton docProp = new ToolBarButton("Властивості");
+			docProp.ImageKey = "document-properties";
+			docProp.ToolTipText = "Редагувати властивості симуляції";
+			docProp.Tag = DocumentProperties;
+			Buttons.Add(docProp);
 		}
 
 		void buildImages()
@@ -63,6 +84,15 @@ namespace Biosim.UI
 			);
 			imageList.Images.Add("document-new", Image.FromStream(
 				Utils.LoadResource("document-new"))
+			);
+			imageList.Images.Add("document-open", Image.FromStream(
+				Utils.LoadResource("document-open"))
+			);
+			imageList.Images.Add("document-save", Image.FromStream(
+				Utils.LoadResource("document-save"))
+			);
+			imageList.Images.Add("document-properties", Image.FromStream(
+				Utils.LoadResource("document-properties"))
 			);
 		}
 	}

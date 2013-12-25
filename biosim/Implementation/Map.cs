@@ -12,6 +12,11 @@ namespace Biosim.Implementation
 		[NonSerialized]
 		AbstractMapSelector	selector;
 
+		public PropertyCollection Statistics {
+			get;
+			set;
+		}
+
 		public AbstractMapSelector Selector {
 			get {
 				if (selector == null) {
@@ -75,26 +80,6 @@ namespace Biosim.Implementation
 			Type = MapType.Box;
 			Cells = new AbstractCell[width * height];
 			RuleActions = new List<AbstractRuleAction>();
-			RuleActions.Add(
-				new RuleAction(MainWindow.dummy, 
-					new RuleAnd(
-						new RuleEquals("Alive", false), 
-						new RuleEquals("Neighbours", 3)), 
-					ActionType.Born, ""));
-			RuleActions.Add(
-				new RuleAction(MainWindow.dummy, 
-					new RuleAnd(
-						new RuleEquals("Alive", true), 
-						new RuleOr(
-							new RuleGreater("Neighbours", 3), 
-							new RuleLess("Neighbours", 2)
-						)
-					), ActionType.Die, ""));
-
-
-			foreach (var r in RuleActions) {
-				Console.WriteLine(r);
-			}
 		}
 
 		public void InitializeCells(AbstractCell cell)
@@ -110,6 +95,16 @@ namespace Biosim.Implementation
 			Application.DoEvents();
 		}
 
+		public void AddStatistics(AbstractProperty prop)
+		{
+			Statistics.Add(prop);
+		}
+
+		public void RemoveStatistics(String name)
+		{
+			Statistics.Remove(name);
+		}
+
 		public void Process()
 		{
 			AbstractCell[] cellsCopy = new AbstractCell[Cells.Length];
@@ -121,28 +116,146 @@ namespace Biosim.Implementation
 					AbstractCell c = selector.Select(x, y);
 				
 					foreach (AbstractRuleAction r in RuleActions) {
-						c.Properties ["Neighbours"].Unset();
-						for (int i = -1; i <= 1; ++i) {
-							for (int j = -1; j <= 1; ++j) {
-								if (i == 0 && j == 0)
-									continue;
-								try {
-									if (selector.Select(x + i, y + j) != null) {
-										if (selector.Select(x + i, y + j).Properties ["Name"].Equ(r.TargetCell.Properties ["Name"].Value)) {
-											if (selector.Select(x + i, y + j).Properties ["Alive"].Equ(true)) {
-												c.Properties ["Neighbours"].Increment();
+						c.Properties ["Сусіди"].Unset();
+						switch (r.NeighboursSelectorType) {
+							case NeighboursType.All:
+								for (int i = -1; i <= 1; ++i) {
+									for (int j = -1; j <= 1; ++j) {
+										if (i == 0 && j == 0)
+											continue;
+										try {
+											if (selector.Select(x + i, y + j) != null) {
+												if (selector.Select(x + i, y + j).Properties ["Ім'я"].Equ(r.TargetCell.Properties ["Ім'я"].Value)) {
+													if (selector.Select(x + i, y + j).Properties ["Жива"].Equ(true)) {
+														c.Properties ["Сусіди"].Increment();
+													}
+												}
+											} else {
+												continue;
+											}
+										} catch (NullReferenceException e) {
+											Console.WriteLine(e.Message);
+											Console.WriteLine(e.Source);
+											continue;
+										}
+										Application.DoEvents();
+									}
+								}
+								break;
+							case NeighboursType.Cross:
+								for (int i = -1; i <= 1; ++i) {
+									if (i == 0)
+										continue;
+									if (selector.Select(x + i, y) != null) {
+										if (selector.Select(x + i, y).Properties ["Ім'я"].Equ(r.TargetCell.Properties ["Ім'я"].Value)) {
+											if (selector.Select(x + i, y).Properties ["Жива"].Equ(true)) {
+												c.Properties ["Сусіди"].Increment();
 											}
 										}
 									} else {
 										continue;
 									}
-								} catch (NullReferenceException e) {
-									Console.WriteLine(e.Message);
-									Console.WriteLine(e.Source);
-									continue;
+									if (selector.Select(x, y + i) != null) {
+										if (selector.Select(x, y + i).Properties ["Ім'я"].Equ(r.TargetCell.Properties ["Ім'я"].Value)) {
+											if (selector.Select(x, y + i).Properties ["Жива"].Equ(true)) {
+												c.Properties ["Сусіди"].Increment();
+											}
+										}
+									} else {
+										continue;
+									}
 								}
-								Application.DoEvents();
-							}
+								break;
+							case NeighboursType.DiagonalCross:
+								for (int i = -1; i <= 1; ++i) {
+									for (int j = -1; j <= 1; ++j) {
+										if (i == 0 || j == 0)
+											continue;
+										try {
+											if (selector.Select(x + i, y + j) != null) {
+												if (selector.Select(x + i, y + j).Properties ["Ім'я"].Equ(r.TargetCell.Properties ["Ім'я"].Value)) {
+													if (selector.Select(x + i, y + j).Properties ["Жива"].Equ(true)) {
+														c.Properties ["Сусіди"].Increment();
+													}
+												}
+											} else {
+												continue;
+											}
+										} catch (NullReferenceException e) {
+											Console.WriteLine(e.Message);
+											Console.WriteLine(e.Source);
+											continue;
+										}
+										Application.DoEvents();
+									}
+								}
+								break;
+							case NeighboursType.LeftRight:
+								for (int i = -1; i <= 1; ++i) {
+									if (i == 0)
+										continue;
+									if (selector.Select(x + i, y) != null) {
+										if (selector.Select(x + i, y).Properties ["Ім'я"].Equ(r.TargetCell.Properties ["Ім'я"].Value)) {
+											if (selector.Select(x + i, y).Properties ["Жива"].Equ(true)) {
+												c.Properties ["Сусіди"].Increment();
+											}
+										}
+									} else {
+										continue;
+									}
+								}
+								break;
+							case NeighboursType.TopBottom:
+								for (int i = -1; i <= 1; ++i) {
+									if (i == 0)
+										continue;
+									if (selector.Select(x, y + i) != null) {
+										if (selector.Select(x, y + i).Properties ["Ім'я"].Equ(r.TargetCell.Properties ["Ім'я"].Value)) {
+											if (selector.Select(x, y + i).Properties ["Жива"].Equ(true)) {
+												c.Properties ["Сусіди"].Increment();
+											}
+										}
+									} else {
+										continue;
+									}
+								}
+								break;
+							case NeighboursType.LeftRightCross:
+								Cell c1 = (Cell)selector.Select(x - 1, y - 1);
+								Cell c2 = (Cell)selector.Select(x + 1, y + 1);
+								if (c1 != null) {
+									if (c1.Properties ["Ім'я"].Equ(r.TargetCell.Properties ["Ім'я"].Value)) {
+										if (c1.Properties ["Жива"].Equ(true)) {
+											c.Properties ["Сусіди"].Increment();
+										}
+									}
+								}
+								if (c2 != null) {
+									if (c2.Properties ["Ім'я"].Equ(r.TargetCell.Properties ["Ім'я"].Value)) {
+										if (c2.Properties ["Жива"].Equ(true)) {
+											c.Properties ["Сусіди"].Increment();
+										}
+									}
+								}
+								break;
+							case NeighboursType.RightLeftCross:
+								c1 = (Cell)selector.Select(x + 1, y - 1);
+								c2 = (Cell)selector.Select(x - 1, y + 1);
+								if (c1 != null) {
+									if (c1.Properties ["Ім'я"].Equ(r.TargetCell.Properties ["Ім'я"].Value)) {
+										if (c1.Properties ["Жива"].Equ(true)) {
+											c.Properties ["Сусіди"].Increment();
+										}
+									}
+								}
+								if (c2 != null) {
+									if (c2.Properties ["Ім'я"].Equ(r.TargetCell.Properties ["Ім'я"].Value)) {
+										if (c2.Properties ["Жива"].Equ(true)) {
+											c.Properties ["Сусіди"].Increment();
+										}
+									}
+								}
+								break;
 						}
 
 						switch (r.Process(c)) {
@@ -150,12 +263,15 @@ namespace Biosim.Implementation
 								cellsCopy [selector.GetIndex(x, y)] = r.TargetCell.Clone();
 								break;
 							case ActionType.Die:
-								if (c.Properties ["Name"].Equ(r.TargetCell.Properties ["Name"].Value)) {
-									cellsCopy [selector.GetIndex(x, y)].Properties ["Alive"].Unset();
+								if (c.Properties ["Ім'я"].Equ(r.TargetCell.Properties ["Ім'я"].Value)) {
+									cellsCopy [selector.GetIndex(x, y)].Properties ["Жива"].Unset();
 								}
 								break;
 							case ActionType.SetValue:
 								cellsCopy [selector.GetIndex(x, y)].Properties [r.TargetProperty].Set();
+								break;
+							case ActionType.SetValueTo:
+								cellsCopy [selector.GetIndex(x, y)].Properties [r.TargetProperty].Set(r.IncrementValue);
 								break;
 							case ActionType.UnsetValue:
 								cellsCopy [selector.GetIndex(x, y)].Properties [r.TargetProperty].Unset();
@@ -163,8 +279,32 @@ namespace Biosim.Implementation
 							case ActionType.IncValue:
 								cellsCopy [selector.GetIndex(x, y)].Properties [r.TargetProperty].Increment();
 								break;
+							case ActionType.IncBy:
+								cellsCopy [selector.GetIndex(x, y)].Properties [r.TargetProperty].Increment(r.IncrementValue);
+								break;
 							case ActionType.DecValue:
 								cellsCopy [selector.GetIndex(x, y)].Properties [r.TargetProperty].Decrement();
+								break;
+							case ActionType.DecBy:
+								cellsCopy [selector.GetIndex(x, y)].Properties [r.TargetProperty].Decrement(r.IncrementValue);
+								break;
+							case ActionType.StatsDec:
+								if (Statistics.HasProperty(r.TargetProperty)) {
+									if (r.IncrementValue != null) {
+										Statistics [r.TargetProperty].Decrement(r.IncrementValue);
+									} else {
+										Statistics [r.TargetProperty].Decrement();
+									}
+								}
+								break;
+							case ActionType.StatsInc:
+								if (Statistics.HasProperty(r.TargetProperty)) {
+									if (r.IncrementValue != null) {
+										Statistics [r.TargetProperty].Increment(r.IncrementValue);
+									} else {
+										Statistics [r.TargetProperty].Increment();
+									}
+								}
 								break;
 							case ActionType.NoChange:
 								break;

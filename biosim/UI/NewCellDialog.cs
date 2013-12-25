@@ -1,0 +1,157 @@
+using System;
+using System.Windows.Forms;
+using System.Drawing;
+using Biosim.Abstraction;
+using Biosim.Implementation;
+
+namespace Biosim.UI
+{
+	public static class NewCellDialog
+	{
+		static Form form;
+		static TextBox txt_name;
+		static Button apply;
+		static Button cancel;
+		static ComboBox cb_shape;
+		static CellPreviewWidget preview;
+		static Cell previewCell;
+		static ColorWidget colorSelection;
+
+		public static Cell Cell {
+			get;
+			private set;
+		}
+
+		static NewCellDialog()
+		{
+			initializeUI();
+		}
+
+		static void initializeUI()
+		{
+			form = new Form();
+			form.Text = "Створити клітину";
+			form.FormBorderStyle = FormBorderStyle.FixedDialog;
+			form.AutoSize = true;
+			form.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+			form.Margin = new Padding(8);
+			form.StartPosition = FormStartPosition.CenterScreen;
+
+			preview = new CellPreviewWidget();
+			preview.Parent = form;
+
+			Label lbl_name = new Label();
+			lbl_name.Text = "Ім'я:";
+			lbl_name.Parent = form;
+			lbl_name.Width = 50;
+			lbl_name.Location = new Point(preview.Right + 5, 5);
+
+			txt_name = new TextBox();
+			txt_name.Text = "Нова клітина";
+			txt_name.Width = 150;
+			txt_name.Location = new Point(lbl_name.Right + 5, 5);
+			txt_name.Parent = form;
+
+			Label lbl_shape = new Label();
+			lbl_shape.Text = "Форма:";
+			lbl_shape.Width = 50;
+			lbl_shape.Parent = form;
+			lbl_shape.Location = new Point(preview.Right + 5, lbl_name.Bottom + 5);
+			cb_shape = new ComboBox();
+			cb_shape.Items.Add("Квадрат");
+			cb_shape.Items.Add("Круг");
+			cb_shape.Items.Add("Трикутник");
+			cb_shape.Items.Add("Ромб");
+			cb_shape.Width = 150;
+			cb_shape.DropDownStyle = ComboBoxStyle.DropDownList;
+			cb_shape.SelectedIndex = 0;
+			cb_shape.Location = new Point(lbl_shape.Right + 5, lbl_shape.Top);
+			cb_shape.Parent = form;
+			cb_shape.SelectedIndexChanged += HandleSelectedIndexChanged;
+
+			colorSelection = new ColorWidget();
+			colorSelection.Parent = form;
+			colorSelection.Location = new Point(lbl_shape.Left, lbl_shape.Bottom + 5);
+			colorSelection.ColorChanged += (sender, e) => {
+				previewCell.Color = colorSelection.Color;
+				preview.Preview(previewCell);
+			};
+
+			apply = new Button();
+			apply.Text = "Створити";
+			apply.Location = new Point(colorSelection.Right - apply.Width, colorSelection.Bottom + 5);
+			apply.DialogResult = DialogResult.OK;
+			apply.Parent = form;
+			form.AcceptButton = apply;
+
+			cancel = new Button();
+			cancel.Text = "Відмінити";
+			cancel.Location = new Point(apply.Left - cancel.Width - 5, apply.Top);
+			cancel.DialogResult = DialogResult.Cancel;
+			cancel.Parent = form;
+
+			txt_name.TextChanged += (sender, e) => {
+				if (txt_name.Text.Equals(String.Empty)) {
+					apply.Enabled = false;
+				} else {
+					apply.Enabled = true;
+				}
+			};
+
+			form.Activated += (sender, e) => HandleSelectedIndexChanged(null, null);
+		}
+
+		static void HandleSelectedIndexChanged(object sender, EventArgs e)
+		{
+			switch (cb_shape.SelectedIndex) {
+				case 0: //square
+					previewCell.Shape = Biosim.Implementation.Cell.CellShape.Square;
+					break;
+				case 1: //circle
+					previewCell.Shape = Biosim.Implementation.Cell.CellShape.Circle;
+					break;
+				case 2: //triangle
+					previewCell.Shape = Biosim.Implementation.Cell.CellShape.Triangle;
+					break;
+				case 3: //diamond
+					previewCell.Shape = Biosim.Implementation.Cell.CellShape.Diamond;
+					break;
+			}
+			preview.PreviewCell = previewCell;
+		}
+
+		public static DialogResult Show()
+		{
+			Cell = null;
+			cb_shape.SelectedIndex = 0;
+			previewCell = null;
+			previewCell = new Cell("Preview");
+			preview.PreviewCell = previewCell;
+			colorSelection.Reset(previewCell.Color);
+			txt_name.Text = "Нова клітина";
+
+			if (form.ShowDialog() == DialogResult.OK) {
+				Cell = new Cell(txt_name.Text);
+				switch (cb_shape.SelectedIndex) {
+					case 0: //square
+						Cell.Shape = Biosim.Implementation.Cell.CellShape.Square;
+						break;
+					case 1: //circle
+						Cell.Shape = Biosim.Implementation.Cell.CellShape.Circle;
+						break;
+					case 2: //triangle
+						Cell.Shape = Biosim.Implementation.Cell.CellShape.Triangle;
+						break;
+					case 3: //diamond
+						Cell.Shape = Biosim.Implementation.Cell.CellShape.Diamond;
+						break;
+				}
+				Cell.Color = colorSelection.Color;
+				return DialogResult.OK;
+			}
+			return DialogResult.Cancel;
+			
+		}
+	}
+}
+

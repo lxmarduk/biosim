@@ -13,11 +13,11 @@ namespace Biosim.UI
 		MapVizualizer mapVis;
 		SideBar sidebar;
 		Timer playTimer;
-		public static Cell dummy = new Cell("Dummy");
+		OpenFileDialog openFile;
+		SaveFileDialog saveFile;
 
 		public MainWindow()
 		{
-			dummy = (Cell)Utils.DeserializeCell("cells/Dummy.bin");
 			try {
 				InitializeUi();
 			} catch (NullReferenceException) {
@@ -34,12 +34,7 @@ namespace Biosim.UI
 			toolbar.Visible = true;
 			toolbar.ButtonClick += ToolbarButtonClick;
 
-			NewMapDialog.Show();
-
-			Map map = NewMapDialog.Map;
-			if (map == null) {
-				throw new NullReferenceException();
-			}
+			Map map = new Map(16, 16);
 			map.InitializeCells(new Cell("Empty"));
 			mapVis = new MapVizualizer(this, map);
 			mapVis.Controls [0].MouseClick += HandleMouseClick;
@@ -53,6 +48,24 @@ namespace Biosim.UI
 			playTimer.Enabled = false;
 
 			OnResize(null);
+
+			openFile = new OpenFileDialog();
+			openFile.CheckFileExists = true;
+			openFile.Filter = "Binary data|*.bin";
+			openFile.FilterIndex = 0;
+			openFile.Multiselect = false;
+			openFile.RestoreDirectory = true;
+			openFile.ShowReadOnly = true;
+			openFile.Title = "Відкрити";
+
+			saveFile = new SaveFileDialog();
+			saveFile.Filter = "Binary data|*.bin";
+			saveFile.FilterIndex = 0;
+			saveFile.AddExtension = true;
+			saveFile.DefaultExt = ".bin";
+			saveFile.CreatePrompt = true;
+			saveFile.RestoreDirectory = true;
+			saveFile.Title = "Зберегти";
 		}
 
 		void HandleMouseClick(object sender, MouseEventArgs e)
@@ -68,7 +81,7 @@ namespace Biosim.UI
 				}
 				mapVis.Map.SetCell(pickedCell.Clone(), x, y);
 			} else {
-				mapVis.Map.Selector.Select(x, y).Properties ["Alive"].Unset();
+				mapVis.Map.Selector.Select(x, y).Properties ["Жива"].Unset();
 			}
 			mapVis.Refresh();
 		}
@@ -114,10 +127,28 @@ namespace Biosim.UI
 						if (MessageBox.Show("Ви впевнені, що хочете почати нову симуляцію?\nВсі не збережені зміни буде відкинуто.", "Нова симуляція", MessageBoxButtons.YesNo) == DialogResult.Yes) {
 							if (NewMapDialog.Show() == DialogResult.OK) {
 								mapVis.Map = NewMapDialog.Map;
-								mapVis.Map.InitializeCells(new Cell("Dummy"));
+								mapVis.Map.InitializeCells(new Cell("Empty"));
 								mapVis.Refresh();
 							}
 						}
+						break;
+					case MainToolbar.OpenDocumentButton:
+						if (openFile.ShowDialog() == DialogResult.OK) {
+							Map m = Utils.DeserializeMap(openFile.FileName);
+							if (m != null) {
+								mapVis.Map = m;
+								mapVis.Refresh();
+							} else {
+								MessageBox.Show("Не можу завантажити симуляцію. Можливо, це не файл симуляції.", "Помилка завантаження.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+							}
+						}
+						break;
+					case MainToolbar.SaveDocumentButton:
+						if (saveFile.ShowDialog() == DialogResult.OK) {
+							Utils.SerializeMap(mapVis.Map, saveFile.FileName);
+						}
+						break;
+					case MainToolbar.DocumentProperties:
 						break;
 				}
 			}

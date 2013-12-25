@@ -83,6 +83,17 @@
     <Compile Include="Implementation\CellDrawerDiamond.cs" />
     <Compile Include="UI\MainToolbar.cs" />
     <Compile Include="UI\CellView.cs" />
+    <Compile Include="UI\NewPropertyDialog.cs" />
+    <Compile Include="UI\EditPropertyDialog.cs" />
+    <Compile Include="UI\EditPropertyWidget.cs" />
+    <Compile Include="UI\NewCellDialog.cs" />
+    <Compile Include="UI\RuleEquationWidget.cs" />
+    <Compile Include="UI\CellPreviewWidget.cs" />
+    <Compile Include="UI\ColorWidget.cs" />
+    <Compile Include="UI\EditCellDialog.cs" />
+    <Compile Include="Implementation\RuleNotEquals.cs" />
+    <Compile Include="UI\RuleLogicalWidget.cs" />
+    <Compile Include="UI\NewRuleActionDialog.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

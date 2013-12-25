@@ -4,11 +4,9 @@ using Biosim.Abstraction;
 
 namespace Biosim.Implementation
 {
-
 	[Serializable]
 	public sealed class PropertyCollection : ICollection<AbstractProperty>
 	{
-
 		List<AbstractProperty> items;
 
 		public PropertyCollection()
@@ -62,6 +60,16 @@ namespace Biosim.Implementation
 			return items.Remove(item);
 		}
 
+		public bool Remove(string name)
+		{
+			for (int i = 0; i < items.Count; ++i) {
+				if (items [i].Name.Equals(name)) {
+					return items.Remove(items [i]);
+				}
+			}
+			return false;
+		}
+
 		public IEnumerator<AbstractProperty> GetEnumerator()
 		{
 			return new PropertyEnumerator(this);
@@ -70,6 +78,9 @@ namespace Biosim.Implementation
 		public AbstractProperty this [int index] {
 			get {
 				return items [index];
+			}
+			set {
+				items [index] = value.Clone();
 			}
 		}
 
@@ -98,6 +109,11 @@ namespace Biosim.Implementation
 				}
 			}
 			return false;
+		}
+
+		public int IndexOf(AbstractProperty abstractProperty)
+		{
+			return items.IndexOf(abstractProperty);
 		}
 	}
 }

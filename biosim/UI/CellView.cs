@@ -22,7 +22,8 @@ namespace Biosim.UI
 		public AbstractCell SelectedCell {
 			get {
 				if (view.SelectedIndex != -1) {
-					return view.Items [view.SelectedIndex] != null ? (view.Items [view.SelectedIndex] as AbstractCell).Clone() : null;
+					AbstractCell cell = (view.Items [view.SelectedIndex] as AbstractCell);
+					return cell != null ? cell.Clone() : null;
 				}
 				return null;
 			}
@@ -52,7 +53,7 @@ namespace Biosim.UI
 
 			Cell cell = (Cell)view.Items [e.Index];
 			cell.DrawIcon(e.Graphics, new Rectangle(e.Bounds.Left + 4, e.Bounds.Top + 4, 24, 24));
-			e.Graphics.DrawString(cell.Properties ["Name"].Value.ToString(), 
+			e.Graphics.DrawString(cell.Properties ["Ім'я"].Value.ToString(), 
 				view.Font, 
 				Brushes.Black, 
 				e.Bounds.Left + 32, 
@@ -84,6 +85,17 @@ namespace Biosim.UI
 					Console.WriteLine(e.Message);
 				}
 			}
+		}
+
+		public void Reload()
+		{
+			view.Items.Clear();
+			loadCells();
+		}
+
+		public void RemoveCell(int selectedIndex)
+		{
+			view.Items.RemoveAt(selectedIndex);
 		}
 	}
 }
