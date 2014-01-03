@@ -42,15 +42,17 @@ namespace Biosim.UI
 			btnAddNewCell.Parent = this;
 			btnAddNewCell.Click += (sender, e) => {
 				Cell c;
-				if (NewCellDialog.Show() == DialogResult.OK) {
-					if (NewCellDialog.Cell != null) {
-						c = (Cell)NewCellDialog.Cell.Clone();
+				NewCellDialog newCellDlg = new NewCellDialog();
+				if (newCellDlg.Show() == DialogResult.OK) {
+					if (newCellDlg.Cell != null) {
+						c = (Cell)newCellDlg.Cell.Clone();
 						Utils.Serialize(c, c.Properties ["Ім'я"].Value.ToString());
 						view.Reload();
 					} else {
 						MessageBox.Show("Чогось не можу створити нову клітину.", "Помилка", MessageBoxButtons.OK, MessageBoxIcon.Error);
 					}
 				}
+				newCellDlg.Dispose();
 			};
 
 			btnRemoveCell = new Button();
@@ -87,9 +89,10 @@ namespace Biosim.UI
 				if (index != -1) {
 					Cell editableCell = (Cell)view.View.Items [index];
 					string prevName = editableCell.Properties ["Ім'я"].Value.ToString();
-					EditCellDialog.EditableCell = editableCell;
-					if (EditCellDialog.Show() == DialogResult.OK) {
-						Cell c = (Cell)EditCellDialog.EditableCell.Clone();
+					EditCellDialog edtCell = new EditCellDialog();
+					edtCell.EditableCell = editableCell;
+					if (edtCell.Show() == DialogResult.OK) {
+						Cell c = (Cell)edtCell.EditableCell.Clone();
 						if (!c.Properties ["Ім'я"].Equ(prevName)) {
 							File.Delete("cells/" + prevName + ".bin");
 						}
@@ -103,6 +106,7 @@ namespace Biosim.UI
 							}
 						}
 					}
+					edtCell.Dispose();
 					view.Reload();
 				}
 			};

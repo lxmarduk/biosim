@@ -5,32 +5,35 @@ using Biosim.Implementation;
 
 namespace Biosim.UI
 {
-	public static class NewMapDialog
+	public sealed class NewMapDialog : Form
 	{
-		static Form form;
-		static Button apply;
-		static Button cancel;
-		static Label lbl_width;
-		static NumericUpDown width;
-		static Label lbl_height;
-		static NumericUpDown height;
-		static Label lbl_type;
-		static ComboBox map_type;
+		Button apply;
+		Button cancel;
+		Label lbl_width;
+		NumericUpDown width;
+		Label lbl_height;
+		NumericUpDown height;
+		Label lbl_type;
+		ComboBox map_type;
 
-		public static Map Map {
+		public Map Map {
 			get;
 			private set;
 		}
 
-		static NewMapDialog()
+		public NewMapDialog()
 		{
-			form = new Form();
-			form.Text = "Створити мапу";
-			form.FormBorderStyle = FormBorderStyle.FixedDialog;
-			form.AutoSize = true;
-			form.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-			form.Margin = new Padding(8);
-			form.StartPosition = FormStartPosition.CenterScreen;
+			initializeUI();
+		}
+
+		void initializeUI()
+		{
+			Text = "Створити мапу";
+			FormBorderStyle = FormBorderStyle.FixedDialog;
+			AutoSize = true;
+			AutoSizeMode = AutoSizeMode.GrowAndShrink;
+			Margin = new Padding(8);
+			StartPosition = FormStartPosition.CenterScreen;
 
 			lbl_width = new Label();
 			lbl_width.Text = "Ширина:";
@@ -58,34 +61,33 @@ namespace Biosim.UI
 			map_type.DropDownStyle = ComboBoxStyle.DropDownList;
 			map_type.SelectedIndex = 0;
 
-			lbl_width.Parent = form;
-			lbl_height.Parent = form;
-			lbl_type.Parent = form;
-			width.Parent = form;
-			height.Parent = form;
-			map_type.Parent = form;
+			lbl_width.Parent = this;
+			lbl_height.Parent = this;
+			lbl_type.Parent = this;
+			width.Parent = this;
+			height.Parent = this;
+			map_type.Parent = this;
 
 			apply = new Button();
 			apply.Text = "Створити";
-			apply.Location = new System.Drawing.Point(form.Width - apply.Width, map_type.Bottom + 8);
+			apply.Location = new System.Drawing.Point(Width - apply.Width, map_type.Bottom + 8);
 			apply.DialogResult = DialogResult.OK;
-			apply.Parent = form;
-			form.AcceptButton = apply;
+			apply.Parent = this;
+			AcceptButton = apply;
 
 			cancel = new Button();
 			cancel.Text = "Відмінити";
 			cancel.Location = new System.Drawing.Point(apply.Left - cancel.Width - 5, apply.Top);
 			cancel.DialogResult = DialogResult.Cancel;
-			cancel.Parent = form;
+			cancel.Parent = this;
 
-			form.DialogResult = DialogResult.Cancel;
+			DialogResult = DialogResult.Cancel;
 		}
 
-		public static DialogResult Show()
+		public new DialogResult Show()
 		{
 			Map = null;
-			form.ShowDialog();
-			if (form.DialogResult == DialogResult.OK) {
+			if (ShowDialog() == DialogResult.OK) {
 				Map = new Map((int)width.Value, (int)height.Value);
 				switch (map_type.SelectedIndex) {
 					case 0:
@@ -96,7 +98,19 @@ namespace Biosim.UI
 						break;
 				}
 			}
-			return form.DialogResult;
+			return DialogResult;
+		}
+
+		protected override void Dispose(bool disposing)
+		{
+			if (disposing) {
+				if (Controls != null) {
+					for (int i = 0; i < Controls.Count; ++i) {
+						Controls [i].Dispose();
+					}
+				}
+			}
+			base.Dispose(disposing);
 		}
 	}
 }

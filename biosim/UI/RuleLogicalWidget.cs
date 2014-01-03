@@ -18,8 +18,8 @@ namespace Biosim.UI
 		Control rule2;
 		Button btnAdd1;
 		Button btnAdd2;
-		Button btnRemove1;
-		Button btnRemove2;
+		//Button btnRemove1;
+		//Button btnRemove2;
 		Cell editableCell;
 
 		public Cell EditableCell {

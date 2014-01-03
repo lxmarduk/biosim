@@ -143,6 +143,12 @@ namespace Biosim
 			}
 			return "WTF?";
 		}
+
+		public static Color RandomColor()
+		{
+			Random rand = new Random();
+			return Color.FromArgb(rand.Next(256), rand.Next(256), rand.Next(256));
+		}
 	}
 }
 

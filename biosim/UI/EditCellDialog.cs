@@ -6,22 +6,21 @@ using System.Drawing;
 
 namespace Biosim.UI
 {
-	public static class EditCellDialog
+	public sealed class EditCellDialog : Form
 	{
-		static Form form;
-		static Cell editableCell;
-		static CellPreviewWidget preview;
-		static ListBox propsList;
-		static EditPropertyWidget propEdit;
-		static Button acceptEdit;
-		static ComboBox cb_shape;
-		static ColorWidget color;
-		static Button btnAdd;
-		static Button btnRemove;
-		static Button allGood /*australian style*/;
-		static Button cancel;
+		Cell editableCell;
+		CellPreviewWidget preview;
+		ListBox propsList;
+		EditPropertyWidget propEdit;
+		Button acceptEdit;
+		ComboBox cb_shape;
+		ColorWidget color;
+		Button btnAdd;
+		Button btnRemove;
+		Button allGood /*australian style*/;
+		Button cancel;
 
-		public static Cell EditableCell {
+		public Cell EditableCell {
 			get {
 				return (Cell)editableCell.Clone();
 			}
@@ -30,27 +29,26 @@ namespace Biosim.UI
 			}
 		}
 
-		static EditCellDialog()
+		public EditCellDialog()
 		{
 			initializeUI();
 		}
 
-		static void initializeUI()
+		void initializeUI()
 		{
-			form = new Form();
-			form.Text = "Редагувати клітину";
-			form.FormBorderStyle = FormBorderStyle.FixedDialog;
-			form.AutoSize = true;
-			form.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-			form.Margin = new Padding(8);
-			form.StartPosition = FormStartPosition.CenterScreen;
+			Text = "Редагувати клітину";
+			FormBorderStyle = FormBorderStyle.FixedDialog;
+			AutoSize = true;
+			AutoSizeMode = AutoSizeMode.GrowAndShrink;
+			Margin = new Padding(8);
+			StartPosition = FormStartPosition.CenterScreen;
 
 
 			propsList = new ListBox();
 			propsList.Location = new Point(4, 4);
 			propsList.Width = 150;
 			propsList.Height = 200;
-			propsList.Parent = form;
+			propsList.Parent = this;
 			propsList.Sorted = true;
 			propsList.SelectedIndexChanged += (sender, e) => {
 				if (propsList.SelectedIndex == -1) {
@@ -62,13 +60,13 @@ namespace Biosim.UI
 
 			propEdit = new EditPropertyWidget();
 			propEdit.Location = new Point(propsList.Right + 15, propsList.Top);
-			propEdit.Parent = form;
+			propEdit.Parent = this;
 			propEdit.CanSaveDataChanged += (sender, e) => acceptEdit.Enabled = propEdit.CanSaveData;
 
 			acceptEdit = new Button();
 			acceptEdit.Text = "Прийняти";
 			acceptEdit.Location = new Point(propEdit.Right - acceptEdit.Width, propEdit.Bottom + 5);
-			acceptEdit.Parent = form;
+			acceptEdit.Parent = this;
 			acceptEdit.Click += (sender, e) => {
 				propEdit.SaveData();
 				string oldParamName = propsList.SelectedItem.ToString();
@@ -88,24 +86,24 @@ namespace Biosim.UI
 			btnAdd.Image = new Bitmap(Utils.LoadResource("list-add"));
 			btnAdd.Size = new Size(36, 36);
 			btnAdd.Location = new Point(propsList.Right + 10, propsList.Bottom - btnAdd.Height);
-			btnAdd.Parent = form;
+			btnAdd.Parent = this;
 			btnAdd.Click += AddPropClick;
 
 			btnRemove = new Button();
 			btnRemove.Image = new Bitmap(Utils.LoadResource("list-remove"));
 			btnRemove.Size = new Size(36, 36);
 			btnRemove.Location = new Point(btnAdd.Right + 10, btnAdd.Top);
-			btnRemove.Parent = form;
+			btnRemove.Parent = this;
 			btnRemove.Click += RemovePropClick;
 
 			preview = new CellPreviewWidget();
 			preview.Location = new Point(4, propsList.Bottom + 16);
-			preview.Parent = form;
+			preview.Parent = this;
 
 			Label lbl_shape = new Label();
 			lbl_shape.Text = "Форма:";
 			lbl_shape.Location = new Point(preview.Right + 5, preview.Top + 2);
-			lbl_shape.Parent = form;
+			lbl_shape.Parent = this;
 			cb_shape = new ComboBox();
 			cb_shape.Items.Add("Квадрат");
 			cb_shape.Items.Add("Круг");
@@ -115,12 +113,12 @@ namespace Biosim.UI
 			cb_shape.DropDownStyle = ComboBoxStyle.DropDownList;
 			cb_shape.SelectedIndex = 0;
 			cb_shape.Location = new Point(lbl_shape.Right + 5, lbl_shape.Top - 2);
-			cb_shape.Parent = form;
+			cb_shape.Parent = this;
 			cb_shape.SelectedIndexChanged += HandleSelectedIndexChanged;
 
 			color = new ColorWidget();
 			color.Location = new Point(lbl_shape.Left, lbl_shape.Bottom + 5);
-			color.Parent = form;
+			color.Parent = this;
 			color.ColorChanged += (sender, e) => {
 				editableCell.Color = color.Color;
 				preview.PreviewCell = editableCell;
@@ -128,18 +126,18 @@ namespace Biosim.UI
 
 			allGood = new Button();
 			allGood.Text = "OK";
-			allGood.Location = new Point(form.Width / 2 + 5, color.Bottom + 5);
+			allGood.Location = new Point(Width / 2 + 5, color.Bottom + 5);
 			allGood.DialogResult = DialogResult.OK;
-			allGood.Parent = form;
+			allGood.Parent = this;
 
 			cancel = new Button();
 			cancel.Text = "Cancel";
-			cancel.Location = new Point(form.Width / 2 - cancel.Width - 5, color.Bottom + 5);
+			cancel.Location = new Point(Width / 2 - cancel.Width - 5, color.Bottom + 5);
 			cancel.DialogResult = DialogResult.Cancel;
-			cancel.Parent = form;
+			cancel.Parent = this;
 		}
 
-		static void loadProps()
+		void loadProps()
 		{
 			if (EditableCell == null) {
 				return;
@@ -151,16 +149,16 @@ namespace Biosim.UI
 			propsList.SelectedIndex = 0;
 		}
 
-		public static DialogResult Show()
+		public new DialogResult Show()
 		{
 			preview.PreviewCell = editableCell;
 			color.Color = editableCell.Color;
 			cb_shape.SelectedIndex = (int)editableCell.Shape;
 			loadProps();
-			return form.ShowDialog();
+			return ShowDialog();
 		}
 
-		static void HandleSelectedIndexChanged(object sender, EventArgs e)
+		void HandleSelectedIndexChanged(object sender, EventArgs e)
 		{
 			switch (cb_shape.SelectedIndex) {
 				case 0: //square
@@ -179,10 +177,11 @@ namespace Biosim.UI
 			preview.PreviewCell = editableCell;
 		}
 
-		static void AddPropClick(object sender, EventArgs e)
+		void AddPropClick(object sender, EventArgs e)
 		{
-			if (NewPropertyDialog.Show() == DialogResult.OK) {
-				AbstractProperty p = NewPropertyDialog.Property;
+			NewPropertyDialog newProp = new NewPropertyDialog();
+			if (newProp.Show() == DialogResult.OK) {
+				AbstractProperty p = newProp.Property;
 				if (p != null) {
 					if (!editableCell.Properties.HasProperty(p.Name)) {
 						editableCell.Properties.Add(p.Clone());
@@ -198,9 +197,10 @@ namespace Biosim.UI
 					}
 				}
 			}
+			newProp.Dispose();
 		}
 
-		static void RemovePropClick(object sender, EventArgs e)
+		void RemovePropClick(object sender, EventArgs e)
 		{
 			int index = propsList.SelectedIndex;
 			if (index == -1) {
@@ -213,6 +213,18 @@ namespace Biosim.UI
 			}
 			editableCell.Properties.Remove(propsList.SelectedItem.ToString());
 			propsList.Items.RemoveAt(propsList.SelectedIndex);
+		}
+
+		protected override void Dispose(bool disposing)
+		{
+			if (disposing) {
+				if (Controls != null) {
+					for (int i = 0; i < Controls.Count; ++i) {
+						Controls [i].Dispose();
+					}
+				}
+			}
+			base.Dispose(disposing);
 		}
 	}
 }

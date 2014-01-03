@@ -6,43 +6,41 @@ using Biosim.Implementation;
 
 namespace Biosim.UI
 {
-	public static class NewCellDialog
+	public sealed class NewCellDialog : Form
 	{
-		static Form form;
-		static TextBox txt_name;
-		static Button apply;
-		static Button cancel;
-		static ComboBox cb_shape;
-		static CellPreviewWidget preview;
-		static Cell previewCell;
-		static ColorWidget colorSelection;
+		TextBox txt_name;
+		Button apply;
+		Button cancel;
+		ComboBox cb_shape;
+		CellPreviewWidget preview;
+		Cell previewCell;
+		ColorWidget colorSelection;
 
-		public static Cell Cell {
+		public Cell Cell {
 			get;
 			private set;
 		}
 
-		static NewCellDialog()
+		public NewCellDialog()
 		{
 			initializeUI();
 		}
 
-		static void initializeUI()
+		void initializeUI()
 		{
-			form = new Form();
-			form.Text = "Створити клітину";
-			form.FormBorderStyle = FormBorderStyle.FixedDialog;
-			form.AutoSize = true;
-			form.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-			form.Margin = new Padding(8);
-			form.StartPosition = FormStartPosition.CenterScreen;
+			Text = "Створити клітину";
+			FormBorderStyle = FormBorderStyle.FixedDialog;
+			AutoSize = true;
+			AutoSizeMode = AutoSizeMode.GrowAndShrink;
+			Margin = new Padding(8);
+			StartPosition = FormStartPosition.CenterScreen;
 
 			preview = new CellPreviewWidget();
-			preview.Parent = form;
+			preview.Parent = this;
 
 			Label lbl_name = new Label();
 			lbl_name.Text = "Ім'я:";
-			lbl_name.Parent = form;
+			lbl_name.Parent = this;
 			lbl_name.Width = 50;
 			lbl_name.Location = new Point(preview.Right + 5, 5);
 
@@ -50,12 +48,12 @@ namespace Biosim.UI
 			txt_name.Text = "Нова клітина";
 			txt_name.Width = 150;
 			txt_name.Location = new Point(lbl_name.Right + 5, 5);
-			txt_name.Parent = form;
+			txt_name.Parent = this;
 
 			Label lbl_shape = new Label();
 			lbl_shape.Text = "Форма:";
 			lbl_shape.Width = 50;
-			lbl_shape.Parent = form;
+			lbl_shape.Parent = this;
 			lbl_shape.Location = new Point(preview.Right + 5, lbl_name.Bottom + 5);
 			cb_shape = new ComboBox();
 			cb_shape.Items.Add("Квадрат");
@@ -66,11 +64,11 @@ namespace Biosim.UI
 			cb_shape.DropDownStyle = ComboBoxStyle.DropDownList;
 			cb_shape.SelectedIndex = 0;
 			cb_shape.Location = new Point(lbl_shape.Right + 5, lbl_shape.Top);
-			cb_shape.Parent = form;
+			cb_shape.Parent = this;
 			cb_shape.SelectedIndexChanged += HandleSelectedIndexChanged;
 
 			colorSelection = new ColorWidget();
-			colorSelection.Parent = form;
+			colorSelection.Parent = this;
 			colorSelection.Location = new Point(lbl_shape.Left, lbl_shape.Bottom + 5);
 			colorSelection.ColorChanged += (sender, e) => {
 				previewCell.Color = colorSelection.Color;
@@ -81,14 +79,14 @@ namespace Biosim.UI
 			apply.Text = "Створити";
 			apply.Location = new Point(colorSelection.Right - apply.Width, colorSelection.Bottom + 5);
 			apply.DialogResult = DialogResult.OK;
-			apply.Parent = form;
-			form.AcceptButton = apply;
+			apply.Parent = this;
+			AcceptButton = apply;
 
 			cancel = new Button();
 			cancel.Text = "Відмінити";
 			cancel.Location = new Point(apply.Left - cancel.Width - 5, apply.Top);
 			cancel.DialogResult = DialogResult.Cancel;
-			cancel.Parent = form;
+			cancel.Parent = this;
 
 			txt_name.TextChanged += (sender, e) => {
 				if (txt_name.Text.Equals(String.Empty)) {
@@ -98,10 +96,10 @@ namespace Biosim.UI
 				}
 			};
 
-			form.Activated += (sender, e) => HandleSelectedIndexChanged(null, null);
+			Activated += (sender, e) => HandleSelectedIndexChanged(null, null);
 		}
 
-		static void HandleSelectedIndexChanged(object sender, EventArgs e)
+		void HandleSelectedIndexChanged(object sender, EventArgs e)
 		{
 			switch (cb_shape.SelectedIndex) {
 				case 0: //square
@@ -120,7 +118,7 @@ namespace Biosim.UI
 			preview.PreviewCell = previewCell;
 		}
 
-		public static DialogResult Show()
+		public new DialogResult Show()
 		{
 			Cell = null;
 			cb_shape.SelectedIndex = 0;
@@ -130,7 +128,7 @@ namespace Biosim.UI
 			colorSelection.Reset(previewCell.Color);
 			txt_name.Text = "Нова клітина";
 
-			if (form.ShowDialog() == DialogResult.OK) {
+			if (ShowDialog() == DialogResult.OK) {
 				Cell = new Cell(txt_name.Text);
 				switch (cb_shape.SelectedIndex) {
 					case 0: //square
@@ -149,8 +147,19 @@ namespace Biosim.UI
 				Cell.Color = colorSelection.Color;
 				return DialogResult.OK;
 			}
-			return DialogResult.Cancel;
-			
+			return DialogResult.Cancel;	
+		}
+
+		protected override void Dispose(bool disposing)
+		{
+			if (disposing) {
+				if (Controls != null) {
+					for (int i = 0; i < Controls.Count; ++i) {
+						Controls [i].Dispose();
+					}
+				}
+			}
+			base.Dispose(disposing);
 		}
 	}
 }

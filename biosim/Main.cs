@@ -22,7 +22,8 @@ namespace Biosim
 			r.EditableCell = (Cell)c.Clone();
 			Application.Run(f);
 			Console.WriteLine(r.Rule);
-			//*/
+			/*/
+
 			Application.EnableVisualStyles();
 			Application.Run(new MainWindow());
 			//*/

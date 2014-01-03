@@ -73,6 +73,10 @@ namespace Biosim.Implementation
 			}
 		}
 
+		public int CellsBorn;
+		public int CellsDied;
+		public int CellsAlive;
+
 		public Map(int width, int height)
 		{
 			Width = width;
@@ -111,6 +115,9 @@ namespace Biosim.Implementation
 			for (int i = 0; i < Cells.Length; ++i) {
 				cellsCopy [i] = Cells [i].Clone();
 			}
+			CellsBorn = 0;
+			CellsDied = 0;
+			CellsAlive = 0;
 			for (int y = 0; y < Height; ++y) {
 				for (int x = 0; x < Width; ++x) {
 					AbstractCell c = selector.Select(x, y);
@@ -257,14 +264,15 @@ namespace Biosim.Implementation
 								}
 								break;
 						}
-
 						switch (r.Process(c)) {
 							case ActionType.Born:
 								cellsCopy [selector.GetIndex(x, y)] = r.TargetCell.Clone();
+								++CellsBorn;
 								break;
 							case ActionType.Die:
 								if (c.Properties ["Ім'я"].Equ(r.TargetCell.Properties ["Ім'я"].Value)) {
 									cellsCopy [selector.GetIndex(x, y)].Properties ["Жива"].Unset();
+									++CellsDied;
 								}
 								break;
 							case ActionType.SetValue:
@@ -308,6 +316,9 @@ namespace Biosim.Implementation
 								break;
 							case ActionType.NoChange:
 								break;
+						}
+						if (cellsCopy [selector.GetIndex(x, y)].Properties ["Жива"].Equ(true)) {
+							++CellsAlive;
 						}
 					}
 					Application.DoEvents();

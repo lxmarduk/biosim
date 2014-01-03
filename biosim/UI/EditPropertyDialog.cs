@@ -6,14 +6,13 @@ using Biosim.Implementation;
 
 namespace Biosim.UI
 {
-	public static class EditPropertyDialog
+	public sealed class EditPropertyDialog : Form
 	{
-		static Form form;
-		static EditPropertyWidget w;
-		static Button apply;
-		static Button cancel;
+		EditPropertyWidget w;
+		Button apply;
+		Button cancel;
 
-		public static AbstractProperty EditableProperty {
+		public AbstractProperty EditableProperty {
 			get {
 				return w.Property;
 			}
@@ -22,38 +21,42 @@ namespace Biosim.UI
 			}
 		}
 
-		static EditPropertyDialog()
+		public EditPropertyDialog()
 		{
-			form = new Form();
-			form.Text = "Редагувати властивість";
-			form.FormBorderStyle = FormBorderStyle.FixedDialog;
-			form.AutoSize = true;
-			form.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-			form.Margin = new Padding(8);
-			form.StartPosition = FormStartPosition.CenterScreen;
-			form.AcceptButton = apply;
+			initializeUI();
+		}
+
+		void initializeUI()
+		{
+			Text = "Редагувати властивість";
+			FormBorderStyle = FormBorderStyle.FixedDialog;
+			AutoSize = true;
+			AutoSizeMode = AutoSizeMode.GrowAndShrink;
+			Margin = new Padding(8);
+			StartPosition = FormStartPosition.CenterScreen;
+			AcceptButton = apply;
 
 			w = new EditPropertyWidget();
-			w.Parent = form;
+			w.Parent = this;
 			w.CanSaveDataChanged += HandleCanSaveDataChanged;
 
 			apply = new Button();
 			apply.Text = "Змінити";
-			apply.Location = new Point(form.Width - apply.Width, w.Bottom + 8);
+			apply.Location = new Point(Width - apply.Width, w.Bottom + 8);
 			apply.DialogResult = DialogResult.OK;
-			apply.Parent = form;
-			form.AcceptButton = apply;
+			apply.Parent = this;
+			AcceptButton = apply;
 
 			cancel = new Button();
 			cancel.Text = "Відмінити";
 			cancel.Location = new Point(apply.Left - cancel.Width - 5, apply.Top);
 			cancel.DialogResult = DialogResult.Cancel;
-			cancel.Parent = form;
+			cancel.Parent = this;
 
-			form.DialogResult = DialogResult.Cancel;
+			DialogResult = DialogResult.Cancel;
 		}
 
-		static void HandleCanSaveDataChanged(object sender, EventArgs e)
+		void HandleCanSaveDataChanged(object sender, EventArgs e)
 		{
 			if (w.CanSaveData) {
 				apply.Enabled = true;
@@ -62,14 +65,26 @@ namespace Biosim.UI
 			}
 		}
 
-		public static DialogResult Show()
+		public new DialogResult Show()
 		{
-			if (form.ShowDialog() == DialogResult.OK) {
+			if (ShowDialog() == DialogResult.OK) {
 				w.SaveData();
 				EditableProperty = w.Property.Clone();
 				return DialogResult.OK;
 			}
 			return DialogResult.Cancel;
+		}
+
+		protected override void Dispose(bool disposing)
+		{
+			if (disposing) {
+				if (Controls != null) {
+					for (int i = 0; i < Controls.Count; ++i) {
+						Controls [i].Dispose();
+					}
+				}
+			}
+			base.Dispose(disposing);
 		}
 	}
 }

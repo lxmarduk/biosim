@@ -72,7 +72,6 @@
     <Compile Include="Implementation\RuleOr.cs" />
     <Compile Include="Implementation\RuleEvaluation.cs" />
     <Compile Include="Implementation\RuleLogical.cs" />
-    <Compile Include="UI\Chart.cs" />
     <Compile Include="UI\NewMapDialog.cs" />
     <Compile Include="Abstraction\IRule.cs" />
     <Compile Include="Abstraction\AbstractCellDrawer.cs" />
@@ -94,6 +93,9 @@
     <Compile Include="Implementation\RuleNotEquals.cs" />
     <Compile Include="UI\RuleLogicalWidget.cs" />
     <Compile Include="UI\NewRuleActionDialog.cs" />
+    <Compile Include="Implementation\SeriesCollection.cs" />
+    <Compile Include="Implementation\SeriesEnumerator.cs" />
+    <Compile Include="UI\RealTimeChart.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

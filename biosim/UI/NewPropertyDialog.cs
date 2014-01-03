@@ -6,22 +6,27 @@ using Biosim.Implementation;
 
 namespace Biosim.UI
 {
-	public static class NewPropertyDialog
+	public sealed class NewPropertyDialog : IDisposable
 	{
-		static Form form;
-		static Button apply;
-		static Button cancel;
-		static ComboBox prop_type;
-		static TextBox txt_name;
-		static TextBox txt_initialValue;
-		static ComboBox boolDropDown;
+		Form form;
+		Button apply;
+		Button cancel;
+		ComboBox prop_type;
+		TextBox txt_name;
+		TextBox txt_initialValue;
+		ComboBox boolDropDown;
 
-		public static AbstractProperty Property {
+		public AbstractProperty Property {
 			get;
 			private set;
 		}
 
-		static NewPropertyDialog()
+		public NewPropertyDialog()
+		{
+			initializeUI();
+		}
+
+		void initializeUI()
 		{
 			form = new Form();
 			form.Text = "Створити властивість";
@@ -95,7 +100,7 @@ namespace Biosim.UI
 			form.DialogResult = DialogResult.Cancel;
 		}
 
-		static void HandleSelectedIndexChanged(object sender, EventArgs e)
+		void HandleSelectedIndexChanged(object sender, EventArgs e)
 		{
 			txt_initialValue.BackColor = Color.White;
 			if (prop_type.SelectedIndex == 1) { //bool
@@ -110,7 +115,7 @@ namespace Biosim.UI
 			HandleTextChanged(null, null);
 		}
 
-		static void HandleTextChanged(object sender, EventArgs e)
+		void HandleTextChanged(object sender, EventArgs e)
 		{
 			string t = txt_initialValue.Text;
 			int i;
@@ -142,7 +147,7 @@ namespace Biosim.UI
 			}
 		}
 
-		public static DialogResult Show()
+		public DialogResult Show()
 		{
 			Property = null;
 			AbstractProperty result = null;
@@ -177,6 +182,11 @@ namespace Biosim.UI
 				Property = result.Clone();
 			}
 			return form.DialogResult;
+		}
+
+		public void Dispose()
+		{
+			form.Dispose();
 		}
 	}
 }

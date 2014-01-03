@@ -15,6 +15,9 @@ namespace Biosim.UI
 		Timer playTimer;
 		OpenFileDialog openFile;
 		SaveFileDialog saveFile;
+		SeriesCollection aliveCollection;
+		SeriesCollection bornCollection;
+		SeriesCollection diedCollection;
 
 		public MainWindow()
 		{
@@ -47,8 +50,6 @@ namespace Biosim.UI
 			playTimer.Tick += HandleTick;
 			playTimer.Enabled = false;
 
-			OnResize(null);
-
 			openFile = new OpenFileDialog();
 			openFile.CheckFileExists = true;
 			openFile.Filter = "Binary data|*.bin";
@@ -66,6 +67,15 @@ namespace Biosim.UI
 			saveFile.CreatePrompt = true;
 			saveFile.RestoreDirectory = true;
 			saveFile.Title = "Зберегти";
+
+			aliveCollection = new SeriesCollection("Кількість живих");
+			aliveCollection.Color = Color.Lime;
+			bornCollection = new SeriesCollection("Кількість народжених");
+			bornCollection.Color = Color.Blue;
+			diedCollection = new SeriesCollection("Кількість померлих");
+			diedCollection.Color = Color.DarkOrchid;
+
+			OnResize(null);
 		}
 
 		void HandleMouseClick(object sender, MouseEventArgs e)
@@ -101,6 +111,9 @@ namespace Biosim.UI
 		{
 			mapVis.Map.Process();
 			mapVis.Refresh();
+			aliveCollection.Add(mapVis.Map.CellsAlive);
+			bornCollection.Add(mapVis.Map.CellsBorn);
+			diedCollection.Add(mapVis.Map.CellsDied);
 		}
 
 		void ToolbarButtonClick(object sender, ToolBarButtonClickEventArgs e)
@@ -124,13 +137,18 @@ namespace Biosim.UI
 						HandleTick(null, null);
 						break;
 					case MainToolbar.NewDocumentButton:
+						NewMapDialog newMapDlg = new NewMapDialog();
 						if (MessageBox.Show("Ви впевнені, що хочете почати нову симуляцію?\nВсі не збережені зміни буде відкинуто.", "Нова симуляція", MessageBoxButtons.YesNo) == DialogResult.Yes) {
-							if (NewMapDialog.Show() == DialogResult.OK) {
-								mapVis.Map = NewMapDialog.Map;
+							if (newMapDlg.Show() == DialogResult.OK) {
+								mapVis.Map = newMapDlg.Map;
 								mapVis.Map.InitializeCells(new Cell("Empty"));
 								mapVis.Refresh();
+								aliveCollection.Clear();
+								bornCollection.Clear();
+								diedCollection.Clear();
 							}
 						}
+						newMapDlg.Dispose();
 						break;
 					case MainToolbar.OpenDocumentButton:
 						if (openFile.ShowDialog() == DialogResult.OK) {
@@ -138,6 +156,9 @@ namespace Biosim.UI
 							if (m != null) {
 								mapVis.Map = m;
 								mapVis.Refresh();
+								aliveCollection.Clear();
+								bornCollection.Clear();
+								diedCollection.Clear();
 							} else {
 								MessageBox.Show("Не можу завантажити симуляцію. Можливо, це не файл симуляції.", "Помилка завантаження.", MessageBoxButtons.OK, MessageBoxIcon.Error);
 							}
@@ -152,6 +173,18 @@ namespace Biosim.UI
 						break;
 				}
 			}
+		}
+
+		protected override void Dispose(bool disposing)
+		{
+			if (disposing) {
+				if (Controls != null) {
+					for (int i = 0; i < Controls.Count; ++i) {
+						Controls [i].Dispose();
+					}
+				}
+			}
+			base.Dispose(disposing);
 		}
 	}
 }

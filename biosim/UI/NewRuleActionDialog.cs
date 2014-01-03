@@ -4,23 +4,20 @@ using System.Drawing;
 
 namespace Biosim
 {
-	public static class NewRuleActionDialog
+	public sealed class NewRuleActionDialog : Form
 	{
-		static Form f;
-
-		static NewRuleActionDialog()
+		public NewRuleActionDialog()
 		{
 			initializeUI();
 		}
 
-		static void initializeUI()
+		void initializeUI()
 		{
-			f = new Form();
-			f.FormBorderStyle = FormBorderStyle.FixedDialog;
-			f.AutoSize = true;
-			f.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-			f.Margin = new Padding(8);
-			f.StartPosition = FormStartPosition.CenterScreen;
+			FormBorderStyle = FormBorderStyle.FixedDialog;
+			AutoSize = true;
+			AutoSizeMode = AutoSizeMode.GrowAndShrink;
+			Margin = new Padding(8);
+			StartPosition = FormStartPosition.CenterScreen;
 		}
 	}
 }
