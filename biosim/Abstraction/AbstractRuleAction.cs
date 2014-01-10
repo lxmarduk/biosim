@@ -6,17 +6,17 @@ namespace Biosim.Abstraction
 	public enum ActionType
 	{
 		NoChange,
+		Born,
+		Die,
 		IncValue,
 		DecValue,
 		SetValue,
 		UnsetValue,
-		Born,
-		Die,
-		StatsInc,
-		StatsDec,
 		IncBy,
 		DecBy,
-		SetValueTo
+		SetValueTo,
+		StatsInc,
+		StatsDec
 	}
 
 	[Serializable]
@@ -95,10 +95,10 @@ namespace Biosim.Abstraction
 				return string.Format("Якщо {0} То {1} для {2}", Rule, Utils.ActionTypeToString(ActionType), TargetProperty);
 			}
 			if (ActionType == ActionType.SetValueTo || ActionType == ActionType.DecBy || ActionType == ActionType.IncBy) {
-				result = string.Format("Якщо {0} То {1} {2} для {3}[{4}]", Rule, Utils.ActionTypeToString(ActionType), IncrementValue, target.Properties ["Name"].Value, TargetProperty);
+				result = string.Format("Якщо {0} То {1} {2} для {3}[{4}]", Rule, Utils.ActionTypeToString(ActionType), IncrementValue, target.Properties ["Ім'я"].Value, TargetProperty);
 				return result;
 			}
-			result = string.Format("Якщо {0} То {1} для {2}[{3}]", Rule, Utils.ActionTypeToString(ActionType), target.Properties ["Name"].Value, TargetProperty);
+			result = string.Format("Якщо {0} То {1} для {2}[{3}]", Rule, Utils.ActionTypeToString(ActionType), target.Properties ["Ім'я"].Value, TargetProperty);
 			return result;
 		}
 	}

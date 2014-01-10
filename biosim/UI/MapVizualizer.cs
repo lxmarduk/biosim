@@ -36,6 +36,8 @@ namespace Biosim
 
 			panel.Location = new Point(0, 0);
 			panel.Size = new Size(CellSize * map.Width, CellSize * map.Height);
+
+			Map.SizeChanged += (sender, e) => panel.Size = new Size(CellSize * map.Width, CellSize * map.Height);
 		}
 
 		void HandlePaint(object sender, PaintEventArgs e)

@@ -9,43 +9,14 @@ using System.Drawing.Drawing2D;
 
 namespace Biosim.UI
 {
-	public class RuleEquationWidget : UserControl
+	public class RuleEquationWidget : RuleWidgetBase
 	{
-		RuleEvaluation equation;
 		String targetProperty;
 		ComboBox cb_props;
 		ComboBox cb_equality;
 		ComboBox cb_textEq;
 		TextBox txt_value;
 		CheckBox ch_bool;
-		bool valid;
-		Cell editableCell;
-
-		public bool Valid {
-			get {
-				return valid;
-			}
-			private set {
-				valid = value;
-			}
-		}
-
-		public Cell EditableCell {
-			get {
-				return editableCell;
-			}
-			set {
-				editableCell = (Cell)value.Clone();
-				loadProps();
-			}
-		}
-
-		public RuleEvaluation Rule {
-			get {
-				prepareEquation();
-				return equation;
-			}
-		}
 
 		public RuleEquationWidget()
 		{
@@ -99,10 +70,10 @@ namespace Biosim.UI
 			cb_textEq.Visible = false;
 
 			ch_bool = new CheckBox();
-			ch_bool.Checked = false;
 			ch_bool.Location = new Point(cb_props.Right + 5, cb_props.Top);
 			ch_bool.Parent = this;
 			ch_bool.Visible = false;
+			ch_bool.CheckStateChanged += ValidateValue;
 
 			txt_value = new TextBox();
 			txt_value.Text = "0";
@@ -142,9 +113,9 @@ namespace Biosim.UI
 
 		}
 
-		void prepareEquation()
+		protected override void PrepareRule()
 		{
-			ValidateValue(null, null);
+			Console.WriteLine("PrepareRule Valid = " + Valid);
 			if (!Valid) {
 				return;
 			}
@@ -161,14 +132,14 @@ namespace Biosim.UI
 
 			if (EditableCell.Properties [targetProperty].GetType().Equals(typeof(BoolProperty))) {
 				//checkbox
-				equation = new RuleEquals(targetProperty, ch_bool.Checked);
+				Rule = new RuleEquals(targetProperty, ch_bool.CheckState == CheckState.Checked);
 			} else if (EditableCell.Properties [targetProperty].GetType().Equals(typeof(StringProperty))) {
 				switch (cb_textEq.SelectedIndex) {
 					case 0: // =
-						equation = new RuleEquals(targetProperty, txt_value.Text);
+						Rule = new RuleEquals(targetProperty, txt_value.Text);
 						break;
 					case 1: // !=
-						equation = new RuleNotEquals(targetProperty, txt_value.Text);
+						Rule = new RuleNotEquals(targetProperty, txt_value.Text);
 						break;
 				}
 			} else {
@@ -187,22 +158,22 @@ namespace Biosim.UI
 				}
 				switch (cb_equality.SelectedIndex) {
 					case 0: // =
-						equation = new RuleEquals(targetProperty, eq);
+						Rule = new RuleEquals(targetProperty, eq);
 						break;
 					case 1: // !=
-						equation = new RuleNotEquals(targetProperty, eq);
+						Rule = new RuleNotEquals(targetProperty, eq);
 						break;
 					case 2: // >
-						equation = new RuleGreater(targetProperty, eq);
+						Rule = new RuleGreater(targetProperty, eq);
 						break;
 					case 3: // <
-						equation = new RuleLess(targetProperty, eq);
+						Rule = new RuleLess(targetProperty, eq);
 						break;
 					case 4: // >=
-						equation = new RuleGreaterEquals(targetProperty, eq);
+						Rule = new RuleGreaterEquals(targetProperty, eq);
 						break;
 					case 5: // <=
-						equation = new RuleLessEquals(targetProperty, eq);
+						Rule = new RuleLessEquals(targetProperty, eq);
 						break;
 				}
 			}
@@ -242,8 +213,7 @@ namespace Biosim.UI
 				txt_value.Visible = true;
 				ch_bool.Visible = false;
 			}
-
-			prepareEquation();
+			ValidateValue(null, null);
 		}
 
 		void ValidateValue(object sender, EventArgs e)
@@ -255,22 +225,14 @@ namespace Biosim.UI
 			if (EditableCell == null) {
 				Valid = false;
 				txt_value.BackColor = Color.IndianRed;
-				return;
 			}
-
+			AbstractProperty pr = EditableCell.Properties [targetProperty];
 			if (ch_bool.Visible) {
 				Valid = true;
-				return;
-			}
-
-			if (t.Equals(String.Empty)) {
+			} else if (t.Equals(String.Empty)) {
 				txt_value.BackColor = Color.IndianRed;
 				Valid = false;
-				return;
-			}
-
-			AbstractProperty pr = EditableCell.Properties [targetProperty];
-			if (pr.GetType().Equals(typeof(IntProperty))) {
+			} else if (pr.GetType().Equals(typeof(IntProperty))) {
 				if (!Int32.TryParse(t, out i)) {
 					txt_value.BackColor = Color.IndianRed;
 					Valid = false;
@@ -295,6 +257,13 @@ namespace Biosim.UI
 				txt_value.BackColor = Color.White;
 				Valid = true;
 			}
+			Console.WriteLine("ValidatValue Valid = " + Valid);
+		}
+
+		protected override void SetEditableCell(Cell value)
+		{
+			base.SetEditableCell(value);
+			loadProps();
 		}
 	}
 }

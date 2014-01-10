@@ -6,9 +6,8 @@ using Biosim.Implementation;
 
 namespace Biosim.UI
 {
-	public sealed class NewPropertyDialog : IDisposable
+	public sealed class NewPropertyDialog : Form
 	{
-		Form form;
 		Button apply;
 		Button cancel;
 		ComboBox prop_type;
@@ -23,35 +22,35 @@ namespace Biosim.UI
 
 		public NewPropertyDialog()
 		{
+			Text = "Створити властивість";
+			FormBorderStyle = FormBorderStyle.FixedDialog;
+			AutoSize = true;
+			AutoSizeMode = AutoSizeMode.GrowAndShrink;
+			Margin = new Padding(8);
+			StartPosition = FormStartPosition.CenterScreen;
+			AcceptButton = apply;
+
 			initializeUI();
 		}
 
 		void initializeUI()
 		{
-			form = new Form();
-			form.Text = "Створити властивість";
-			form.FormBorderStyle = FormBorderStyle.FixedDialog;
-			form.AutoSize = true;
-			form.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-			form.Margin = new Padding(8);
-			form.StartPosition = FormStartPosition.CenterScreen;
-			form.AcceptButton = apply;
 
 			Label lbl_name = new Label();
 			lbl_name.Width = 100;
 			lbl_name.Text = "Ім'я:";
-			lbl_name.Parent = form;
+			lbl_name.Parent = this;
 			txt_name = new TextBox();
 			txt_name.Width = 200;
 			txt_name.Text = "Нова властивість";
 			txt_name.Location = new Point(lbl_name.Right + 5, 0);
-			txt_name.Parent = form;
+			txt_name.Parent = this;
 
 			Label lbl_type = new Label();
 			lbl_type.Text = "Тип:";
 			lbl_type.Width = 100;
 			lbl_type.Location = new Point(0, lbl_name.Bottom + 5);
-			lbl_type.Parent = form;
+			lbl_type.Parent = this;
 			prop_type = new ComboBox();
 			prop_type.Width = 200;
 			prop_type.Location = new Point(lbl_type.Right + 5, lbl_type.Top);
@@ -61,19 +60,19 @@ namespace Biosim.UI
 			prop_type.Items.Add("Дробове число");
 			prop_type.DropDownStyle = ComboBoxStyle.DropDownList;
 			prop_type.SelectedIndex = 0;
-			prop_type.Parent = form;
+			prop_type.Parent = this;
 			prop_type.SelectedIndexChanged += HandleSelectedIndexChanged;
 
 			Label lbl_init = new Label();
 			lbl_init.Width = 100;
 			lbl_init.Text = "Початкове значення:";
 			lbl_init.Location = new Point(0, lbl_type.Bottom + 5);
-			lbl_init.Parent = form;
+			lbl_init.Parent = this;
 			txt_initialValue = new TextBox();
 			txt_initialValue.Width = 200;
 			txt_initialValue.Text = "0";
 			txt_initialValue.Location = new Point(lbl_init.Right + 5, lbl_init.Top);
-			txt_initialValue.Parent = form;
+			txt_initialValue.Parent = this;
 			txt_initialValue.TextChanged += HandleTextChanged;
 			boolDropDown = new ComboBox();
 			boolDropDown.Width = 200;
@@ -82,22 +81,22 @@ namespace Biosim.UI
 			boolDropDown.DropDownStyle = ComboBoxStyle.DropDownList;
 			boolDropDown.Items.Add("хибне");
 			boolDropDown.Items.Add("істинне");
-			boolDropDown.Parent = form;
+			boolDropDown.Parent = this;
 
 			apply = new Button();
 			apply.Text = "Створити";
-			apply.Location = new Point(form.Width - apply.Width, txt_initialValue.Bottom + 8);
+			apply.Location = new Point(Width - apply.Width, txt_initialValue.Bottom + 8);
 			apply.DialogResult = DialogResult.OK;
-			apply.Parent = form;
-			form.AcceptButton = apply;
+			apply.Parent = this;
+			AcceptButton = apply;
 
 			cancel = new Button();
 			cancel.Text = "Відмінити";
 			cancel.Location = new Point(apply.Left - cancel.Width - 5, apply.Top);
 			cancel.DialogResult = DialogResult.Cancel;
-			cancel.Parent = form;
+			cancel.Parent = this;
 
-			form.DialogResult = DialogResult.Cancel;
+			DialogResult = DialogResult.Cancel;
 		}
 
 		void HandleSelectedIndexChanged(object sender, EventArgs e)
@@ -147,7 +146,7 @@ namespace Biosim.UI
 			}
 		}
 
-		public DialogResult Show()
+		public new DialogResult Show()
 		{
 			Property = null;
 			AbstractProperty result = null;
@@ -161,8 +160,8 @@ namespace Biosim.UI
 
 			txt_name.Focus();
 			txt_name.SelectAll();
-			form.ShowDialog();
-			if (form.DialogResult == DialogResult.OK) {
+			ShowDialog();
+			if (DialogResult == DialogResult.OK) {
 				switch (prop_type.SelectedIndex) {
 					case 0: //StringProperty
 						result = new StringProperty(txt_name.Text, txt_initialValue.Text);
@@ -181,12 +180,19 @@ namespace Biosim.UI
 			if (result != null) {
 				Property = result.Clone();
 			}
-			return form.DialogResult;
+			return DialogResult;
 		}
 
-		public void Dispose()
+		protected override void Dispose(bool disposing)
 		{
-			form.Dispose();
+			if (disposing) {
+				if (Controls != null) {
+					for (int i = 0; i < Controls.Count; ++i) {
+						Controls [i].Dispose();
+					}
+				}
+			}
+			base.Dispose(disposing);
 		}
 	}
 }

@@ -1,9 +1,9 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="biosim/UI/RealTimeChart.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="biosim/UI/MainWindow.cs">
     <Files>
-      <File FileName="biosim/UI/RealTimeChart.cs" Line="51" Column="26" />
-      <File FileName="biosim/Main.cs" Line="26" Column="1" />
+      <File FileName="biosim/UI/MainWindow.cs" Line="196" Column="27" />
+      <File FileName="biosim/UI/EditMapPropertiesDialog.cs" Line="215" Column="5" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

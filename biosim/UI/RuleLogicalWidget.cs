@@ -9,88 +9,17 @@ using System.Drawing.Drawing2D;
 
 namespace Biosim.UI
 {
-	public class RuleLogicalWidget : UserControl
+	public class RuleLogicalWidget : RuleWidgetBase
 	{
 		ComboBox cb_type;
 		ComboBox cb_rule1;
 		ComboBox cb_rule2;
-		Control rule1;
-		Control rule2;
+		RuleWidgetBase rule1;
+		RuleWidgetBase rule2;
 		Button btnAdd1;
 		Button btnAdd2;
-		//Button btnRemove1;
-		//Button btnRemove2;
-		Cell editableCell;
-
-		public Cell EditableCell {
-			get {
-				return editableCell;
-			}
-			set {
-				editableCell = (Cell)value.Clone();
-				if (rule1 != null) {
-					if (rule1.GetType().Equals(typeof(RuleLogicalWidget))) {
-						(rule1 as RuleLogicalWidget).EditableCell = editableCell;
-					} else {
-						(rule1 as RuleEquationWidget).EditableCell = editableCell;
-					}
-				}
-				if (rule2 != null) {
-					if (rule2.GetType().Equals(typeof(RuleLogicalWidget))) {
-						(rule2 as RuleLogicalWidget).EditableCell = editableCell;
-					} else {
-						(rule2 as RuleEquationWidget).EditableCell = editableCell;
-					}
-				}
-				Console.WriteLine(editableCell);
-			}
-		}
-
-		public bool Valid {
-			get {
-				if (rule1 != null && rule2 != null) {
-					bool r1, r2;
-					if (rule1.GetType().Equals(typeof(RuleEquationWidget))) {
-						r1 = (rule1 as RuleEquationWidget).Valid;
-					} else {
-						r1 = (rule1 as RuleLogicalWidget).Valid;
-					}
-					if (rule2.GetType().Equals(typeof(RuleEquationWidget))) {
-						r2 = (rule2 as RuleEquationWidget).Valid;
-					} else {
-						r2 = (rule2 as RuleLogicalWidget).Valid;
-					}
-					return r1 && r2;
-				}
-				return false;
-			}
-		}
-
-		public RuleLogical Rule {
-			get {
-				if (Valid) {
-					IRule r1;
-					if (rule1.GetType().Equals(typeof(RuleEquationWidget))) {
-						r1 = (rule1 as RuleEquationWidget).Rule;
-					} else {
-						r1 = (rule1 as RuleLogicalWidget).Rule;
-					}
-					IRule r2;
-					if (rule2.GetType().Equals(typeof(RuleEquationWidget))) {
-						r2 = (rule2 as RuleEquationWidget).Rule;
-					} else {
-						r2 = (rule2 as RuleLogicalWidget).Rule;
-					}
-					switch (cb_type.SelectedIndex) {
-						case 0: //&&
-							return new RuleAnd(r1, r2);
-						case 1: //||
-							return new RuleOr(r1, r2);
-					}
-				}
-				return null;
-			}
-		}
+		Button btnRemove1;
+		Button btnRemove2;
 
 		public RuleLogicalWidget()
 		{
@@ -112,6 +41,13 @@ namespace Biosim.UI
 			Label lbl_rule2 = new Label();
 			cb_rule2 = new ComboBox();
 			btnAdd2 = new Button();
+
+			btnRemove1 = new Button();
+			btnRemove2 = new Button();
+			btnRemove1.Parent = this;
+			btnRemove2.Parent = this;
+			btnRemove1.Size = new Size(36, 36);
+			btnRemove2.Size = new Size(36, 36);
 
 			r1panel.AutoSize = true;
 			r1panel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
@@ -197,30 +133,45 @@ namespace Biosim.UI
 			cb_rule1.Items.Add("Логічне правило");
 			cb_rule1.SelectedIndex = 0;
 
+			btnRemove1.Image = new Bitmap(Utils.LoadResource("list-remove"));
+			btnRemove2.Image = new Bitmap(Utils.LoadResource("list-remove"));
+			btnRemove1.Visible = false;
+			btnRemove2.Visible = false;
+
 			btnAdd1.Image = new Bitmap(Utils.LoadResource("list-add"));
 			btnAdd1.Size = new Size(36, 36);
 			btnAdd1.Click += (sender, ev) => {
 				switch (cb_rule1.SelectedIndex) {
 					case 0:
 						rule1 = new RuleEquationWidget();
-						(rule1 as RuleEquationWidget).EditableCell = (Cell)editableCell.Clone();
-						rule1.Parent = this;
-						rule1.Location = r1panel.Location;
-						r1panel.Visible = false;
-						Console.WriteLine((rule1 as RuleEquationWidget).EditableCell);
 						break;
 					case 1:
 						rule1 = new RuleLogicalWidget();
-						(rule1 as RuleLogicalWidget).EditableCell = (Cell)editableCell.Clone();
-						rule1.Parent = this;
-						rule1.Location = r1panel.Location;
-						r1panel.Visible = false;
-						Console.WriteLine((rule1 as RuleLogicalWidget).EditableCell);
 						break;
 				}
+				if (editableCell != null) {
+					rule1.EditableCell = (Cell)editableCell.Clone();
+				}
+				rule1.ValidationChanged += (sender2, e3) => CheckValid();
+				rule1.Parent = this;
+				rule1.Location = r1panel.Location;
+				r1panel.Visible = false;
 
-				rule1.SizeChanged += (s, evn) => {
+				btnRemove1.Visible = true;
+				btnRemove1.Location = new Point(rule1.Right + 5, rule1.Top - 3);
+				btnRemove1.Click += (s1, e1) => {
+					Controls.Remove(rule1);
+					if (rule1 != null) {
+						rule1.Dispose();
+					}
+					rule1 = null;
+					r1panel.Visible = true;
+					btnRemove1.Visible = false;
+				};
+
+				rule1.SizeChanged += (s2, e2) => {
 					lbl_type.Location = new Point(8, rule1.Bottom + 5);
+					btnRemove1.Location = new Point(rule1.Right + 5, rule1.Top - 3);
 					ResumeLayout();
 					if (Parent != null) {
 						Parent.ResumeLayout();
@@ -258,22 +209,34 @@ namespace Biosim.UI
 				switch (cb_rule2.SelectedIndex) {
 					case 0:
 						rule2 = new RuleEquationWidget();
-						(rule2 as RuleEquationWidget).EditableCell = (Cell)editableCell.Clone();
-						rule2.Parent = this;
-						rule2.Location = r2panel.Location;
-						r2panel.Visible = false;
 						break;
 					case 1:
 						rule2 = new RuleLogicalWidget();
-						(rule2 as RuleLogicalWidget).EditableCell = (Cell)editableCell.Clone();
-						rule2.Parent = this;
-						rule2.Location = r2panel.Location;
-						r2panel.Visible = false;
 						break;
 				}
+				if (editableCell != null) {
+					rule2.EditableCell = (Cell)editableCell.Clone();
+				}
+				rule2.ValidationChanged += (sender2, e3) => CheckValid();
+				rule2.Parent = this;
+				rule2.Location = r2panel.Location;
+				r2panel.Visible = false;
+
+				btnRemove2.Visible = true;
+				btnRemove2.Location = new Point(rule2.Right + 5, rule2.Top - 3);
+				btnRemove2.Click += (s1, e1) => {
+					Controls.Remove(rule2);
+					if (rule2 != null) {
+						rule2.Dispose();
+					}
+					rule2 = null;
+					r2panel.Visible = true;
+					btnRemove2.Visible = false;
+				};
 
 				rule2.SizeChanged += (sendr, evnt) => {
 					ResumeLayout();
+					btnRemove2.Location = new Point(rule2.Right + 5, rule2.Top - 3);
 					if (Parent != null) {
 						Parent.ResumeLayout();
 					}
@@ -310,6 +273,47 @@ namespace Biosim.UI
 
 			e.Graphics.DrawString(c.Items [e.Index].ToString(), c.Font, Brushes.Black, e.Bounds);
 
+		}
+
+		protected override void SetEditableCell(Cell value)
+		{
+			base.SetEditableCell(value);
+			if (rule1 != null) {
+				rule1.EditableCell = editableCell;
+			}
+			if (rule2 != null) {
+				rule2.EditableCell = editableCell;
+			}
+		}
+
+		protected override void PrepareRule()
+		{
+			base.PrepareRule();
+			if (Valid) {
+				rule = null;
+				switch (cb_type.SelectedIndex) {
+					case 0: //&&
+						rule = new RuleAnd(rule1.Rule, rule2.Rule);
+						break;
+					case 1: //||
+						rule = new RuleOr(rule1.Rule, rule2.Rule);
+						break;
+				}
+			}
+		}
+
+		protected override void CheckValid()
+		{
+			valid = false;
+			if (rule1 != null && rule2 != null) {
+				bool r1, r2;
+				r1 = rule1.Valid;
+				r2 = rule2.Valid;
+				Console.WriteLine("RuleLogicalWidget rule1 = " + r1);
+				Console.WriteLine("RuleLogicalWidget rule2 = " + r2);
+				valid = r1 && r2;
+				Console.WriteLine("RuleLogicalWidget Valid = " + valid);
+			}
 		}
 	}
 }

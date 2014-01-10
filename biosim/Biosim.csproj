@@ -96,6 +96,9 @@
     <Compile Include="Implementation\SeriesCollection.cs" />
     <Compile Include="Implementation\SeriesEnumerator.cs" />
     <Compile Include="UI\RealTimeChart.cs" />
+    <Compile Include="UI\WidgetChooser.cs" />
+    <Compile Include="UI\RuleWidgetBase.cs" />
+    <Compile Include="UI\EditMapPropertiesDialog.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

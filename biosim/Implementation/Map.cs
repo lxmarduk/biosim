@@ -11,11 +11,8 @@ namespace Biosim.Implementation
 	{
 		[NonSerialized]
 		AbstractMapSelector	selector;
-
-		public PropertyCollection Statistics {
-			get;
-			set;
-		}
+		[NonSerialized]
+		AbstractCell initialCell;
 
 		public AbstractMapSelector Selector {
 			get {
@@ -33,14 +30,37 @@ namespace Biosim.Implementation
 			}
 		}
 
+		int width;
+		int height;
+
+		public event EventHandler SizeChanged;
+
 		public int Width {
-			get;
-			private set;
+			get {
+				return width;
+			}
+			set {
+				width = value;
+				Cells = new AbstractCell[width * height];
+				InitializeCells(initialCell);
+				if (SizeChanged != null) {
+					SizeChanged(this, null);
+				}
+			}
 		}
 
 		public int Height {
-			get;
-			private set;
+			get {
+				return height;
+			}
+			set {
+				height = value;
+				Cells = new AbstractCell[width * height];
+				InitializeCells(initialCell);
+				if (SizeChanged != null) {
+					SizeChanged(this, null);
+				}
+			}
 		}
 
 		public AbstractCell[] Cells;
@@ -79,8 +99,8 @@ namespace Biosim.Implementation
 
 		public Map(int width, int height)
 		{
-			Width = width;
-			Height = height;
+			this.width = width;
+			this.height = height;
 			Type = MapType.Box;
 			Cells = new AbstractCell[width * height];
 			RuleActions = new List<AbstractRuleAction>();
@@ -88,6 +108,7 @@ namespace Biosim.Implementation
 
 		public void InitializeCells(AbstractCell cell)
 		{
+			initialCell = cell.Clone();
 			for (int i = 0; i < Width * Height; ++i) {
 				Cells [i] = cell.Clone();
 			}
@@ -97,16 +118,6 @@ namespace Biosim.Implementation
 		{
 			Cells [selector.GetIndex(x, y)] = cell;
 			Application.DoEvents();
-		}
-
-		public void AddStatistics(AbstractProperty prop)
-		{
-			Statistics.Add(prop);
-		}
-
-		public void RemoveStatistics(String name)
-		{
-			Statistics.Remove(name);
 		}
 
 		public void Process()
@@ -296,7 +307,7 @@ namespace Biosim.Implementation
 							case ActionType.DecBy:
 								cellsCopy [selector.GetIndex(x, y)].Properties [r.TargetProperty].Decrement(r.IncrementValue);
 								break;
-							case ActionType.StatsDec:
+						/*case ActionType.StatsDec:
 								if (Statistics.HasProperty(r.TargetProperty)) {
 									if (r.IncrementValue != null) {
 										Statistics [r.TargetProperty].Decrement(r.IncrementValue);
@@ -313,7 +324,7 @@ namespace Biosim.Implementation
 										Statistics [r.TargetProperty].Increment();
 									}
 								}
-								break;
+								break;//*/
 							case ActionType.NoChange:
 								break;
 						}

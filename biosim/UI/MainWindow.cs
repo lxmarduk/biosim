@@ -159,6 +159,7 @@ namespace Biosim.UI
 								aliveCollection.Clear();
 								bornCollection.Clear();
 								diedCollection.Clear();
+								extractCells(m);
 							} else {
 								MessageBox.Show("Не можу завантажити симуляцію. Можливо, це не файл симуляції.", "Помилка завантаження.", MessageBoxButtons.OK, MessageBoxIcon.Error);
 							}
@@ -170,6 +171,11 @@ namespace Biosim.UI
 						}
 						break;
 					case MainToolbar.DocumentProperties:
+						EditMapPropertiesDialog editProps = new EditMapPropertiesDialog();
+						editProps.EditableMap = mapVis.Map;
+						if (editProps.Show() == DialogResult.OK) {
+
+						}
 						break;
 				}
 			}
@@ -185,6 +191,11 @@ namespace Biosim.UI
 				}
 			}
 			base.Dispose(disposing);
+		}
+
+		void extractCells(Map m)
+		{
+			// TODO: Add cell exctraction code here.
 		}
 	}
 }

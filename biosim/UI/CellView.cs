@@ -97,6 +97,16 @@ namespace Biosim.UI
 		{
 			view.Items.RemoveAt(selectedIndex);
 		}
+
+		public void SerializeCells()
+		{
+			for (int i = 0; i < View.Items.Count; ++i) {
+				Cell c = (View.Items [i] as Cell);
+				if (c != null) {
+					Utils.Serialize(c, c.Properties ["Ім'я"].Value.ToString());
+				}
+			}
+		}
 	}
 }
 

@@ -144,6 +144,20 @@ namespace Biosim
 			return "WTF?";
 		}
 
+		public static int Clamp(int val, int min, int max)
+		{
+			return val < min ? min : (val > max ? max : val);
+		}
+
+		public static Color Darker(Color c)
+		{
+			int r, g, b;
+			r = Clamp(c.R - 100, 0, 255);
+			g = Clamp(c.G - 100, 0, 255);
+			b = Clamp(c.B - 100, 0, 255);
+			return Color.FromArgb(r, g, b);
+		}
+
 		public static Color RandomColor()
 		{
 			Random rand = new Random();

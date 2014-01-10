@@ -36,7 +36,26 @@ namespace Biosim.UI
 			set;
 		}
 
+		bool fullSize;
+
 		public bool FullSizedChart {
+			get {
+				return fullSize;
+			}
+			set {
+				fullSize = value;
+				if (fullSize) {
+					if (series != null && series.Count != 0) {
+						if (series [0].Count > (Width - OffsetX - 30) / HorizontalScale) {
+							Width = (int)(series [0].Count * HorizontalScale + OffsetX + 30);
+							Refresh();
+						}
+					}
+				}
+			}
+		}
+
+		public string Title {
 			get;
 			set;
 		}
@@ -59,7 +78,8 @@ namespace Biosim.UI
 			toolTip.UseFading = true;
 			toolTip.ShowAlways = true;
 
-			FullSizedChart = true;
+			FullSizedChart = false;
+			Title = "Chart";
 		}
 
 		void HandleMouseMove(object sender, MouseEventArgs e)
@@ -114,6 +134,17 @@ namespace Biosim.UI
 			for (int i = 0; i < series.Count; ++i) {
 				DrawSeries(series [i], e.Graphics);
 			}
+			DrawTitle(e.Graphics);
+		}
+
+		void DrawTitle(Graphics g)
+		{
+			Font titleFont = new Font(Font.FontFamily, 14.0f, FontStyle.Bold);
+			SizeF titleSize = g.MeasureString(Title, titleFont);
+			OffsetY = (int)(titleSize.Height + 10);
+			float x = Width / 2 - titleSize.Width / 2;
+			float y = 5;
+			g.DrawString(Title, titleFont, Brushes.Black, new RectangleF(x, y, titleSize.Width, titleSize.Height));
 		}
 
 		void DrawSeries(SeriesCollection s, Graphics g)
