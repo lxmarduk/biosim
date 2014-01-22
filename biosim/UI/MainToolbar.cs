@@ -12,6 +12,7 @@ namespace Biosim.UI
 		public const int OpenDocumentButton = 4;
 		public const int SaveDocumentButton = 5;
 		public const int DocumentProperties = 6;
+		public const int DocumentStats = 7;
 		ImageList imageList;
 
 		public MainToolbar(Control control) : base()
@@ -66,6 +67,12 @@ namespace Biosim.UI
 			docProp.ToolTipText = "Редагувати властивості симуляції";
 			docProp.Tag = DocumentProperties;
 			Buttons.Add(docProp);
+
+			ToolBarButton stats = new ToolBarButton("Графіки");
+			stats.ImageKey = "chart";
+			stats.ToolTipText = "Переглянути графіки";
+			stats.Tag = DocumentStats;
+			Buttons.Add(stats);
 		}
 
 		void buildImages()
@@ -93,6 +100,9 @@ namespace Biosim.UI
 			);
 			imageList.Images.Add("document-properties", Image.FromStream(
 				Utils.LoadResource("document-properties"))
+			);
+			imageList.Images.Add("chart", Image.FromStream(
+				Utils.LoadResource("chart"))
 			);
 		}
 	}

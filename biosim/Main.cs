@@ -17,7 +17,6 @@ namespace Biosim
 			d.Show();
 			d.Dispose();//*/
 
-			Application.EnableVisualStyles();
 			Application.Run(new MainWindow());
 		}
 	}

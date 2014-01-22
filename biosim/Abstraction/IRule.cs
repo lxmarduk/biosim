@@ -1,5 +1,3 @@
-using System;
-
 namespace Biosim.Abstraction
 {
 	public interface IRule

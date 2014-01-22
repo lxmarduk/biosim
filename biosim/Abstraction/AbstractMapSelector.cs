@@ -16,6 +16,8 @@ namespace Biosim.Abstraction
 		public abstract AbstractCell Select(int x, int y);
 
 		public abstract int GetIndex(int x, int y);
+
+		public abstract int GetIndex(int x, int y, int width, int height);
 	}
 }
 

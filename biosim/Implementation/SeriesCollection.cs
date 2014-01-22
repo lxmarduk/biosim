@@ -45,6 +45,12 @@ namespace Biosim.Implementation
 			items.Clear();
 		}
 
+		public void Reset()
+		{
+			Clear();
+			MaxValue = 0;
+		}
+
 		public bool Contains(double item)
 		{
 			return items.Contains(item);

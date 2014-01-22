@@ -13,3 +13,4 @@
 /home/lxmarduk/Projects/biosim/biosim/obj/x86/Debug/Biosim.Resources.document-save.png
 /home/lxmarduk/Projects/biosim/biosim/obj/x86/Debug/Biosim.Resources.list-add.png
 /home/lxmarduk/Projects/biosim/biosim/obj/x86/Debug/Biosim.Resources.list-remove.png
+/home/lxmarduk/Projects/biosim/biosim/obj/x86/Debug/Biosim.Resources.chart.png

@@ -14,6 +14,7 @@ namespace Biosim.UI
 		List<SeriesCollection> series;
 		double totalMaxValue;
 		ToolTip toolTip;
+		int legendWidth;
 
 		public List<SeriesCollection> Series {
 			get {
@@ -46,8 +47,8 @@ namespace Biosim.UI
 				fullSize = value;
 				if (fullSize) {
 					if (series != null && series.Count != 0) {
-						if (series [0].Count > (Width - OffsetX - 30) / HorizontalScale) {
-							Width = (int)(series [0].Count * HorizontalScale + OffsetX + 30);
+						if (series [0].Count > (Width - OffsetX - legendWidth) / HorizontalScale) {
+							Width = (int)(series [0].Count * HorizontalScale + OffsetX + legendWidth);
 							Refresh();
 						}
 					}
@@ -65,6 +66,7 @@ namespace Biosim.UI
 			series = new List<SeriesCollection>();
 			MinimumSize = new Size(300, 150);
 			AutoSize = false;
+			legendWidth = 25;
 			Paint += HandlePaint;
 			BackColor = Color.White;
 			DoubleBuffered = true;
@@ -94,8 +96,8 @@ namespace Biosim.UI
 
 			int startIndex = 0;
 			if (!FullSizedChart) {
-				if (series [0].Count > ((Width - OffsetX - 25) / HorizontalScale)) {
-					startIndex = series [0].Count - (int)((Width - OffsetX - 25) / HorizontalScale);
+				if (series [0].Count > ((Width - OffsetX - legendWidth) / HorizontalScale)) {
+					startIndex = series [0].Count - (int)((Width - OffsetX - legendWidth) / HorizontalScale);
 				}
 			}
 			x += startIndex;
@@ -130,11 +132,12 @@ namespace Biosim.UI
 					totalMaxValue = series [i].MaxValue;
 				}
 			}
+			DrawLegend(e.Graphics);
 			DrawAxis(e.Graphics);
+			DrawTitle(e.Graphics);
 			for (int i = 0; i < series.Count; ++i) {
 				DrawSeries(series [i], e.Graphics);
 			}
-			DrawTitle(e.Graphics);
 		}
 
 		void DrawTitle(Graphics g)
@@ -164,15 +167,15 @@ namespace Biosim.UI
 			if (s.Count > 1) {
 				int startIndex = 0;
 				if (!FullSizedChart) {
-					if (s.Count > ((Width - OffsetX - 25) / HorizontalScale)) {
-						startIndex = s.Count - (int)((Width - OffsetX - 25) / HorizontalScale);
+					if (s.Count > ((Width - OffsetX - legendWidth) / HorizontalScale)) {
+						startIndex = s.Count - (int)((Width - OffsetX - legendWidth) / HorizontalScale);
 					}
 				}
 				points = new PointF[s.Count - startIndex];
 				for (int i = 0; i < points.Length; ++i) {
 					points [i] = new PointF(i * HorizontalScale + OffsetX, (float)(Height - s [i + startIndex] * scaleY) - OffsetY);
 				}
-				g.DrawCurve(colorPen, points, 0.1f);
+				g.DrawCurve(colorPen, points, 0.25f);
 			} else {
 				g.DrawLine(colorPen, new Point(OffsetX, Height - OffsetY), new Point(OffsetX, (int)(Height - s [0] * scaleY) - OffsetY));
 			}
@@ -183,7 +186,7 @@ namespace Biosim.UI
 			// Y axis
 			g.DrawLine(Pens.Black, new Point(OffsetX, Height - OffsetY + 5), new Point(OffsetX, OffsetY - 5));
 			// X axis
-			g.DrawLine(Pens.Black, new Point(OffsetX - 5, Height - OffsetY), new Point(Width - 30, Height - OffsetY));
+			g.DrawLine(Pens.Black, new Point(OffsetX - 5, Height - OffsetY), new Point(Width - legendWidth, Height - OffsetY));
 
 			float maxValue = totalMaxValue > GetBiggestNumber() ? (float)totalMaxValue : GetBiggestNumber();
 			float scaleY = ((float)Height - OffsetY * 2) / maxValue;
@@ -243,8 +246,8 @@ namespace Biosim.UI
 				if (series [0].Count > 0) {
 					int startIndex = 0;
 					if (!FullSizedChart) {
-						if (series [0].Count > ((Width - OffsetX * 2) / HorizontalScale)) {
-							startIndex = series [0].Count - (int)((Width - OffsetX * 2) / HorizontalScale);
+						if (series [0].Count > ((Width - OffsetX - legendWidth) / HorizontalScale)) {
+							startIndex = series [0].Count - (int)((Width - OffsetX - legendWidth) / HorizontalScale);
 						}
 					}
 					string str = startIndex.ToString();
@@ -253,9 +256,43 @@ namespace Biosim.UI
 					if (startIndex == 0) {
 						g.DrawString(lastIndex, Font, Brushes.Black, series [0].Count * HorizontalScale + OffsetX, Height - OffsetY);
 					} else {
-						g.DrawString(lastIndex, Font, Brushes.Black, Width - OffsetX, Height - OffsetY);
+						g.DrawString(lastIndex, Font, Brushes.Black, Width - legendWidth, Height - OffsetY);
 					}
 				}
+			}
+		}
+
+		void DrawLegend(Graphics g)
+		{
+			if (series == null || series.Count == 0) {
+				return;
+			}
+			int spacing = 5;
+			int y_center = Height / 2;
+			int count = series.Count;
+			int count2 = count / 2;
+			SizeF[] sizes = new SizeF[count];
+			for (int i = 0; i < count; ++i) {
+				sizes [i] = g.MeasureString(series [i].Name, Font);
+				if (legendWidth < sizes [i].Width + 20) {
+					legendWidth = (int)sizes [i].Width + 20;
+				}
+			}
+			if (fullSize) {
+				if (series != null && series.Count != 0) {
+					if (series [0].Count > (Width - OffsetX - legendWidth) / HorizontalScale) {
+						Width = (int)(series [0].Count * HorizontalScale + OffsetX + legendWidth);
+						Refresh();
+					}
+				}
+			}
+			Point startPoint = new Point(Width - legendWidth, (int)(y_center - sizes [0].Height * count2 - spacing * count2));
+			for (int i = 0; i < count; ++i) {
+				Color c = series [i].Color;
+				g.DrawLine(new Pen(c), startPoint.X, startPoint.Y + sizes [i].Height / 2,
+					startPoint.X + 10, startPoint.Y + sizes [i].Height / 2);
+				g.DrawString(series [i].Name, Font, Brushes.Black, startPoint.X + 15, startPoint.Y);
+				startPoint.Y = (int)(startPoint.Y + sizes [i].Height + spacing);
 			}
 		}
 
@@ -316,6 +353,13 @@ namespace Biosim.UI
 		{
 			series.Add(s);
 			return series.Count - 1;
+		}
+
+		public void Reset()
+		{
+			for (int i = 0; i < series.Count; ++i) {
+				series [i].Reset();
+			}
 		}
 	}
 }

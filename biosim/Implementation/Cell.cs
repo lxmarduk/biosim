@@ -82,13 +82,17 @@ namespace Biosim.Implementation
 			g.DrawRectangle(Pens.Blue, bounds);
 			g.FillRectangle(Brushes.DimGray, bounds);
 			if ((bool)Properties ["Жива"].Value) {
-				drawer.Draw(g, bounds);
+				if (drawer != null) {
+					drawer.Draw(g, bounds);
+				}
 			}
 		}
 
 		public void DrawIcon(Graphics g, Rectangle bounds)
 		{
-			drawer.Draw(g, bounds);
+			if (drawer != null) {
+				drawer.Draw(g, bounds);
+			}
 		}
 
 		#endregion

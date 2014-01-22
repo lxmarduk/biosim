@@ -309,10 +309,7 @@ namespace Biosim.UI
 				bool r1, r2;
 				r1 = rule1.Valid;
 				r2 = rule2.Valid;
-				Console.WriteLine("RuleLogicalWidget rule1 = " + r1);
-				Console.WriteLine("RuleLogicalWidget rule2 = " + r2);
 				valid = r1 && r2;
-				Console.WriteLine("RuleLogicalWidget Valid = " + valid);
 			}
 		}
 	}

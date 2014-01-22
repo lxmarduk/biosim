@@ -62,6 +62,7 @@ namespace Biosim
 				BinaryFormatter bin = new BinaryFormatter();
 				FileStream fstr = new FileStream(fileName, FileMode.Open);
 				Map result = (Map)bin.Deserialize(fstr);
+				result.Type = result.Type;
 				fstr.Dispose();
 				return result;
 			} catch {

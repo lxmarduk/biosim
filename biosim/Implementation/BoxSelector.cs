@@ -32,7 +32,20 @@ namespace Biosim.Implementation
 
 		public override int GetIndex(int x, int y)
 		{
-			return x + y * Map.Width;
+			return GetIndex(x, y, Map.Width, Map.Height);
+		}
+
+		public override int GetIndex(int x, int y, int width, int height)
+		{
+			if (x < 0)
+				throw new IndexOutOfRangeException();
+			if (x >= width)
+				throw new IndexOutOfRangeException();
+			if (y < 0)
+				throw new IndexOutOfRangeException();
+			if (y >= height)
+				throw new IndexOutOfRangeException();
+			return x + y * width;
 		}
 
 		#endregion

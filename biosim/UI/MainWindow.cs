@@ -59,15 +59,6 @@ namespace Biosim.UI
 			openFile.ShowReadOnly = true;
 			openFile.Title = "Відкрити";
 
-			saveFile = new SaveFileDialog();
-			saveFile.Filter = "Binary data|*.bin";
-			saveFile.FilterIndex = 0;
-			saveFile.AddExtension = true;
-			saveFile.DefaultExt = ".bin";
-			saveFile.CreatePrompt = true;
-			saveFile.RestoreDirectory = true;
-			saveFile.Title = "Зберегти";
-
 			aliveCollection = new SeriesCollection("Кількість живих");
 			aliveCollection.Color = Color.Lime;
 			bornCollection = new SeriesCollection("Кількість народжених");
@@ -89,7 +80,7 @@ namespace Biosim.UI
 				} else {
 					return;
 				}
-				mapVis.Map.SetCell(pickedCell.Clone(), x, y);
+				mapVis.Map.SetCell((Cell)pickedCell.Clone(), x, y);
 			} else {
 				mapVis.Map.Selector.Select(x, y).Properties ["Жива"].Unset();
 			}
@@ -166,16 +157,50 @@ namespace Biosim.UI
 						}
 						break;
 					case MainToolbar.SaveDocumentButton:
+						saveFile = new SaveFileDialog();
+						saveFile.Filter = "Binary data|*.bin";
+						saveFile.FilterIndex = 0;
+						saveFile.AddExtension = true;
+						saveFile.DefaultExt = ".bin";
+						saveFile.CreatePrompt = true;
+						saveFile.RestoreDirectory = true;
+						saveFile.Title = "Зберегти";
 						if (saveFile.ShowDialog() == DialogResult.OK) {
-							Utils.SerializeMap(mapVis.Map, saveFile.FileName);
+							Map m = mapVis.Map;
+							Utils.SerializeMap(m, saveFile.FileName);
 						}
+						saveFile.Dispose();
 						break;
 					case MainToolbar.DocumentProperties:
 						EditMapPropertiesDialog editProps = new EditMapPropertiesDialog();
 						editProps.EditableMap = mapVis.Map;
 						if (editProps.Show() == DialogResult.OK) {
-
+							mapVis.updateSize();
+							mapVis.Refresh();
+							aliveCollection.Reset();
+							bornCollection.Reset();
+							diedCollection.Reset();
 						}
+						break;
+					case MainToolbar.DocumentStats:
+						Form frm = new Form();
+						frm.Text = "Графіки";
+						frm.AutoScroll = true;
+						frm.FormBorderStyle = FormBorderStyle.FixedDialog;
+						frm.BackColor = Color.White;
+						frm.Size = new Size(640, 400);
+						RealTimeChart chart = new RealTimeChart(frm);
+						chart.Title = "Графіки живих, народжених і померлих особин";
+						chart.Height = frm.ClientSize.Height - 30;
+						chart.Width = frm.ClientSize.Width;
+						chart.AddSeries(aliveCollection);
+						chart.AddSeries(bornCollection);
+						chart.AddSeries(diedCollection);
+						chart.FullSizedChart = true;
+						frm.ScrollControlIntoView(chart);
+						frm.Scroll += (sndr, evt) => chart.Refresh();
+						frm.ShowDialog();
+						frm.Dispose();
 						break;
 				}
 			}
