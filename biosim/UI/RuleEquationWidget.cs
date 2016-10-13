@@ -27,8 +27,7 @@ namespace Biosim.UI
 
 		void initializeUI()
 		{
-
-			Label lbl_if = new Label();
+            Label lbl_if = new Label();
 			lbl_if.Text = "Якщо:";
 			lbl_if.AutoSize = true;
 			lbl_if.Location = new Point(0, 4);

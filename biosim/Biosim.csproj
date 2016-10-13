@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
@@ -13,6 +13,8 @@
     <newfilesearch>OnLoadAutoInsert</newfilesearch>
     <ReleaseVersion>1.1</ReleaseVersion>
     <SynchReleaseVersion>false</SynchReleaseVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -23,6 +25,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DebugType>none</DebugType>
@@ -32,6 +35,7 @@
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
     <ConsolePause>false</ConsolePause>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -50,15 +54,23 @@
     <Compile Include="Implementation\PropertyEnumerator.cs" />
     <Compile Include="Implementation\StringProperty.cs" />
     <Compile Include="Debug.cs" />
-    <Compile Include="UI\MainWindow.cs" />
+    <Compile Include="UI\MainWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Utils.cs" />
-    <Compile Include="UI\MapVizualizer.cs" />
-    <Compile Include="UI\ToolbarToggleButton.cs" />
+    <Compile Include="UI\MapVizualizer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\ToolbarToggleButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Implementation\Map.cs" />
     <Compile Include="Implementation\BoxSelector.cs" />
     <Compile Include="Implementation\ContinuousSelector.cs" />
     <Compile Include="Implementation\Cell.cs" />
-    <Compile Include="UI\SideBar.cs" />
+    <Compile Include="UI\SideBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Abstraction\AbstractCell.cs" />
     <Compile Include="Abstraction\AbstractProperty.cs" />
     <Compile Include="Abstraction\AbstractMapSelector.cs" />
@@ -73,7 +85,9 @@
     <Compile Include="Implementation\RuleOr.cs" />
     <Compile Include="Implementation\RuleEvaluation.cs" />
     <Compile Include="Implementation\RuleLogical.cs" />
-    <Compile Include="UI\NewMapDialog.cs" />
+    <Compile Include="UI\NewMapDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Abstraction\IRule.cs" />
     <Compile Include="Abstraction\AbstractCellDrawer.cs" />
     <Compile Include="Implementation\CellDrawerSquare.cs" />
@@ -81,33 +95,60 @@
     <Compile Include="Implementation\ShapeDrawer.cs" />
     <Compile Include="Implementation\CellDrawerTriangle.cs" />
     <Compile Include="Implementation\CellDrawerDiamond.cs" />
-    <Compile Include="UI\MainToolbar.cs" />
-    <Compile Include="UI\CellView.cs" />
-    <Compile Include="UI\NewPropertyDialog.cs" />
-    <Compile Include="UI\EditPropertyDialog.cs" />
-    <Compile Include="UI\EditPropertyWidget.cs" />
-    <Compile Include="UI\NewCellDialog.cs" />
-    <Compile Include="UI\RuleEquationWidget.cs" />
-    <Compile Include="UI\CellPreviewWidget.cs" />
-    <Compile Include="UI\ColorWidget.cs" />
-    <Compile Include="UI\EditCellDialog.cs" />
+    <Compile Include="UI\MainToolbar.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\CellView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\NewPropertyDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\EditPropertyDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\EditPropertyWidget.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\NewCellDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\RuleEquationWidget.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\CellPreviewWidget.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\ColorWidget.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\EditCellDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Implementation\RuleNotEquals.cs" />
-    <Compile Include="UI\RuleLogicalWidget.cs" />
-    <Compile Include="UI\NewRuleActionDialog.cs" />
+    <Compile Include="UI\RuleLogicalWidget.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\NewRuleActionDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Implementation\SeriesCollection.cs" />
     <Compile Include="Implementation\SeriesEnumerator.cs" />
-    <Compile Include="UI\RealTimeChart.cs" />
-    <Compile Include="UI\WidgetChooser.cs" />
-    <Compile Include="UI\RuleWidgetBase.cs" />
-    <Compile Include="UI\EditMapPropertiesDialog.cs" />
+    <Compile Include="UI\RealTimeChart.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\WidgetChooser.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\RuleWidgetBase.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\EditMapPropertiesDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <ItemGroup>
-    <Folder Include="Implementation\" />
-    <Folder Include="UI\" />
-    <Folder Include="Resources\" />
-    <Folder Include="Abstraction\" />
-  </ItemGroup>
+  <ItemGroup />
   <ProjectExtensions>
     <MonoDevelop>
       <Properties>
@@ -151,6 +192,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="gtk-gui\gui.stetic" />
+    <None Include="app.config" />
   </ItemGroup>
 </Project>

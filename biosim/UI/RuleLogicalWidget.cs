@@ -31,7 +31,7 @@ namespace Biosim.UI
 
 		void initializeUI()
 		{
-			Label lbl_type = new Label();
+            Label lbl_type = new Label();
 			cb_type = new ComboBox();
 			Panel r1panel = new Panel();
 			Label lbl_rule1 = new Label();
@@ -42,18 +42,21 @@ namespace Biosim.UI
 			cb_rule2 = new ComboBox();
 			btnAdd2 = new Button();
 
-			btnRemove1 = new Button();
+            btnRemove1 = new Button();
 			btnRemove2 = new Button();
 			btnRemove1.Parent = this;
 			btnRemove2.Parent = this;
 			btnRemove1.Size = new Size(36, 36);
 			btnRemove2.Size = new Size(36, 36);
 
-			r1panel.AutoSize = true;
+            btnAdd1.Size = new Size(36, 36);
+            btnAdd2.Size = new Size(36, 36);
+
+            r1panel.AutoSize = true;
 			r1panel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
 			r2panel.AutoSize = true;
 			r2panel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-			r1panel.SizeChanged += (sender, e) => lbl_type.Top = r1panel.Bottom + 5;
+            r1panel.SizeChanged += (sender, e) => lbl_type.Top = r1panel.Bottom + 5;
 			r1panel.VisibleChanged += (sender, e) => {
 				if (r1panel.Visible) {
 					lbl_type.Location = new Point(8, r1panel.Bottom + 5);
@@ -65,7 +68,7 @@ namespace Biosim.UI
 				}
 				r2panel.Top = lbl_type.Bottom + 5;
 				cb_type.Location = new Point(lbl_type.Right + 5, lbl_type.Top - 1);
-			};
+            };
 
 			r1panel.Parent = this;
 			r1panel.Location = new Point(4, 4);
@@ -91,15 +94,7 @@ namespace Biosim.UI
 						cb_type.Location = new Point(lbl_type.Right + 5, lbl_type.Top - 1);
 					}
 				}
-				ResumeLayout();
-				if (Parent != null) {
-					Parent.ResumeLayout();
-				}
-				Refresh();
-				if (Parent != null) {
-					Parent.Refresh();
-				}
-			};
+            };
 			cb_type.Parent = this;
 			cb_type.Location = new Point(lbl_type.Right + 5, lbl_type.Top - 1);
 			cb_type.Width = 50;
@@ -139,7 +134,6 @@ namespace Biosim.UI
 			btnRemove2.Visible = false;
 
 			btnAdd1.Image = new Bitmap(Utils.LoadResource("list-add"));
-			btnAdd1.Size = new Size(36, 36);
 			btnAdd1.Click += (sender, ev) => {
 				switch (cb_rule1.SelectedIndex) {
 					case 0:
@@ -149,11 +143,11 @@ namespace Biosim.UI
 						rule1 = new RuleLogicalWidget();
 						break;
 				}
-				if (editableCell != null) {
+                if (editableCell != null) {
 					rule1.EditableCell = (Cell)editableCell.Clone();
 				}
-				rule1.ValidationChanged += (sender2, e3) => CheckValid();
-				rule1.Parent = this;
+                Controls.Add(rule1);
+                rule1.ValidationChanged += (sender2, e3) => CheckValid();
 				rule1.Location = r1panel.Location;
 				r1panel.Visible = false;
 
@@ -167,30 +161,13 @@ namespace Biosim.UI
 					rule1 = null;
 					r1panel.Visible = true;
 					btnRemove1.Visible = false;
-				};
+                };
 
 				rule1.SizeChanged += (s2, e2) => {
 					lbl_type.Location = new Point(8, rule1.Bottom + 5);
 					btnRemove1.Location = new Point(rule1.Right + 5, rule1.Top - 3);
-					ResumeLayout();
-					if (Parent != null) {
-						Parent.ResumeLayout();
-					}
-					Refresh();
-					if (Parent != null) {
-						Parent.Refresh();
-					}
-				};
-
-				ResumeLayout();
-				if (Parent != null) {
-					Parent.ResumeLayout();
-				}
-				Refresh();
-				if (Parent != null) {
-					Parent.Refresh();
-				}
-			};
+                };
+            };
 				
 
 			lbl_rule2.Text = "Друге правило:";
@@ -204,7 +181,6 @@ namespace Biosim.UI
 			cb_rule2.SelectedIndex = 0;
 
 			btnAdd2.Image = new Bitmap(Utils.LoadResource("list-add"));
-			btnAdd2.Size = new Size(36, 36);
 			btnAdd2.Click += (sen, even) => {
 				switch (cb_rule2.SelectedIndex) {
 					case 0:
@@ -232,29 +208,12 @@ namespace Biosim.UI
 					rule2 = null;
 					r2panel.Visible = true;
 					btnRemove2.Visible = false;
-				};
+                };
 
 				rule2.SizeChanged += (sendr, evnt) => {
-					ResumeLayout();
-					btnRemove2.Location = new Point(rule2.Right + 5, rule2.Top - 3);
-					if (Parent != null) {
-						Parent.ResumeLayout();
-					}
-					Refresh();
-					if (Parent != null) {
-						Parent.Refresh();
-					}
+                    btnRemove2.Location = new Point(rule2.Right + 5, rule2.Top - 3);
 				};
-
-				ResumeLayout();
-				if (Parent != null) {
-					Parent.ResumeLayout();
-				}
-				Refresh();
-				if (Parent != null) {
-					Parent.Refresh();
-				}
-			};
+    		};
 
 		}
 

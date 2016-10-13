@@ -51,7 +51,7 @@ namespace Biosim.UI
 
 		void intializeUi()
 		{
-			Label lbl_name = new Label();
+            Label lbl_name = new Label();
 			lbl_name.Text = "Ім'я:";
 			lbl_name.Parent = this;
 			lbl_name.Width = 100;

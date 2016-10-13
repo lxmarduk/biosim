@@ -52,8 +52,8 @@ namespace Biosim.UI
 
 		void initializeUI()
 		{
-			#region Labels
-			Label lbl_width = new Label();
+            #region Labels
+            Label lbl_width = new Label();
 			Label lbl_height = new Label();
 			Label lbl_type = new Label();
 			Label lbl_rules = new Label();

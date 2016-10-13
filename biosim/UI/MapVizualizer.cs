@@ -43,6 +43,9 @@ namespace Biosim
 			}
 			Image img = new Bitmap(panel.Width, panel.Height);
 			Graphics gr = Graphics.FromImage(img);
+            gr.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighSpeed;
+            gr.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+            gr.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
 			for (int i = 0; i < map.Width; ++i) {
 				for (int j = 0; j < map.Height; ++j) {
 					if (map.Selector.Select(i, j) != null) {

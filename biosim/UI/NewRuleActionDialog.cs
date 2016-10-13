@@ -58,7 +58,7 @@ namespace Biosim.UI
 
 		void initializeUI()
 		{
-			FormBorderStyle = FormBorderStyle.FixedDialog;
+            FormBorderStyle = FormBorderStyle.FixedDialog;
 			AutoSize = true;
 			AutoSizeMode = AutoSizeMode.GrowAndShrink;
 			Margin = new Padding(8);
@@ -356,6 +356,7 @@ namespace Biosim.UI
 			b.Dispose();
 			updateButtonTags();
 			adjustWidgets();
+            AutoSize = true;
 		}
 
 		void adjustWidgets()

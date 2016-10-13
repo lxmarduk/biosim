@@ -28,7 +28,7 @@ namespace Biosim.UI
 
 		void initializeUI()
 		{
-			Text = "Створити клітину";
+            Text = "Створити клітину";
 			FormBorderStyle = FormBorderStyle.FixedDialog;
 			AutoSize = true;
 			AutoSizeMode = AutoSizeMode.GrowAndShrink;

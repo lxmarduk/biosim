@@ -32,7 +32,7 @@ namespace Biosim.UI
 
 		void initializeUI()
 		{
-			box = new GroupBox();
+            box = new GroupBox();
 			box.Text = "Колір";
 			box.SetBounds(0, 0, 200, 100);
 			box.AutoSizeMode = AutoSizeMode.GrowAndShrink;

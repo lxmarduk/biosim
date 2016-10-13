@@ -36,7 +36,7 @@ namespace Biosim.UI
 
 		void initializeUI()
 		{
-			Text = "Редагувати клітину";
+            Text = "Редагувати клітину";
 			FormBorderStyle = FormBorderStyle.FixedDialog;
 			AutoSize = true;
 			AutoSizeMode = AutoSizeMode.GrowAndShrink;

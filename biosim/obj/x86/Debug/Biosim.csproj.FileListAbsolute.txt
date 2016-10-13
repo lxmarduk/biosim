@@ -1,0 +1,6 @@
+D:\Projects\biosim\biosim\biosim\obj\x86\Debug\biosim.exe
+D:\Projects\biosim\biosim\biosim\bin\Debug\biosim.exe
+D:\Projects\biosim\biosim\biosim\bin\Debug\biosim.pdb
+D:\Projects\biosim\biosim\biosim\obj\x86\Debug\Biosim.csprojResolveAssemblyReference.cache
+D:\Projects\biosim\biosim\biosim\obj\x86\Debug\biosim.pdb
+D:\Projects\biosim\biosim\biosim\bin\Debug\biosim.exe.config

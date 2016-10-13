@@ -49,7 +49,10 @@ namespace Biosim.UI
 			e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
 			if (e.State.HasFlag(DrawItemState.Selected)) {
 				e.Graphics.FillRectangle(new LinearGradientBrush(e.Bounds, Color.AliceBlue, Color.SkyBlue, LinearGradientMode.Vertical), e.Bounds);
-			}
+			} else
+            {
+                e.Graphics.FillRectangle(Brushes.White, e.Bounds);
+            }
 
 			Cell cell = (Cell)view.Items [e.Index];
 			cell.DrawIcon(e.Graphics, new Rectangle(e.Bounds.Left + 4, e.Bounds.Top + 4, 24, 24));

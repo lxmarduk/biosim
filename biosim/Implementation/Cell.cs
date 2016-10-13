@@ -79,7 +79,7 @@ namespace Biosim.Implementation
 
 		public override void Draw(Graphics g, Rectangle bounds)
 		{
-			g.DrawRectangle(Pens.Blue, bounds);
+			g.DrawRectangle(Pens.DimGray, bounds);
 			g.FillRectangle(Brushes.DimGray, bounds);
 			if ((bool)Properties ["Жива"].Value) {
 				if (drawer != null) {

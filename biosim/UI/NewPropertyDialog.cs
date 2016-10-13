@@ -22,7 +22,7 @@ namespace Biosim.UI
 
 		public NewPropertyDialog()
 		{
-			Text = "Створити властивість";
+            Text = "Створити властивість";
 			FormBorderStyle = FormBorderStyle.FixedDialog;
 			AutoSize = true;
 			AutoSizeMode = AutoSizeMode.GrowAndShrink;

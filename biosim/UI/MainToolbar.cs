@@ -17,15 +17,15 @@ namespace Biosim.UI
 
 		public MainToolbar(Control control) : base()
 		{
-			imageList = new ImageList();
+            imageList = new ImageList();
 			buildImages();
 			ImageList = imageList;
             
 			Parent = control;
 			Dock = DockStyle.Top;
 			Height = 52;
-            
-			Appearance = ToolBarAppearance.Flat;
+
+            Appearance = ToolBarAppearance.Normal;
 			ButtonSize = new Size(52, 52);
             
 			ToolbarToggleButton play = new ToolbarToggleButton("Старт");

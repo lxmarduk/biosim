@@ -28,7 +28,7 @@ namespace Biosim.UI
 
 		void initializeUI()
 		{
-			Text = "Редагувати властивість";
+            Text = "Редагувати властивість";
 			FormBorderStyle = FormBorderStyle.FixedDialog;
 			AutoSize = true;
 			AutoSizeMode = AutoSizeMode.GrowAndShrink;

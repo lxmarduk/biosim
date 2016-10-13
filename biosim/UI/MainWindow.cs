@@ -30,7 +30,8 @@ namespace Biosim.UI
 
 		void InitializeUi()
 		{
-			SetClientSizeCore(800, 600);
+            //BackColor = Color.FromArgb(255, 0xEC, 0xE9, 0xD8);
+            SetClientSizeCore(800, 600);
 			Text = Assembly.GetExecutingAssembly().GetName().Name + " v" + Assembly.GetExecutingAssembly().GetName().Version;
 			DoubleBuffered = true;
 			toolbar = new MainToolbar(this);

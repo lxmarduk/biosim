@@ -33,7 +33,7 @@ namespace Biosim.UI
 		{
 			view = new CellView(this);
 
-			btnAddNewCell = new Button();
+            btnAddNewCell = new Button();
 			btnAddNewCell.Image = new Bitmap(Utils.LoadResource("list-add"));
 			btnAddNewCell.Location = new Point(3, view.Bottom);
 			btnAddNewCell.Width = 36;

@@ -1,4 +1,5 @@
 using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace Biosim.UI
@@ -30,7 +31,7 @@ namespace Biosim.UI
 
 		void initializeUI()
 		{
-			widgetType = new ComboBox();
+            widgetType = new ComboBox();
 			widgetType.Parent = this;
 			widgetType.DropDownStyle = ComboBoxStyle.DropDownList;
 			widgetType.Items.Add("Порівняння");

@@ -2,6 +2,7 @@ using System;
 using System.Windows.Forms;
 using Biosim.Abstraction;
 using Biosim.Implementation;
+using System.Drawing;
 
 namespace Biosim.UI
 {
@@ -28,7 +29,7 @@ namespace Biosim.UI
 
 		void initializeUI()
 		{
-			Text = "Створити мапу";
+            Text = "Створити мапу";
 			FormBorderStyle = FormBorderStyle.FixedDialog;
 			AutoSize = true;
 			AutoSizeMode = AutoSizeMode.GrowAndShrink;
